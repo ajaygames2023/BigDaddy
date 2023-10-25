@@ -2,6 +2,7 @@ import 'package:casino/global_widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
 import '../../../global_widgets/text.dart';
+import '../../../utils/constants/colors.dart';
 
 class TariffsCard extends StatelessWidget {
   const TariffsCard({
@@ -21,7 +22,7 @@ class TariffsCard extends StatelessWidget {
           children: [
             const TextSpan(
               text: '• ',
-              style: TextStyle(color: Color.fromARGB(255, 246, 209, 115),fontSize: 20,fontWeight: FontWeight.bold),
+              style: TextStyle(color: CasinoColors.primary,fontSize: 20,fontWeight: FontWeight.bold),
             ),
             TextSpan(
               text: text,
@@ -39,9 +40,9 @@ class TariffsCard extends StatelessWidget {
       width: 350,
       decoration: BoxDecoration(
         color: Colors.black,
-        gradient: const RadialGradient(colors: [
-          Color.fromARGB(255, 246, 209, 115),
-          Color.fromARGB(255, 0, 0, 0),
+        gradient:  const RadialGradient(colors: [
+          CasinoColors.primary,
+          CasinoColors.secondary,
         ]),
         border: Border.all(
           color: Colors.white
@@ -74,8 +75,8 @@ class TariffsCard extends StatelessWidget {
             CasinoButton(title: 'Book Now',
             onTap: (){onTap();},
             backgroundColor: Colors.black,
-            borderColor: Color.fromARGB(255, 246, 209, 115),
-            titleColor: Color.fromARGB(255, 246, 209, 115),
+            borderColor: CasinoColors.primary,
+            titleColor: CasinoColors.primary,
             height: 50,
             width: 200,),
             const SizedBox(height: 20,)

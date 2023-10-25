@@ -25,7 +25,7 @@ class Invoice extends GetView<InvoiceController> {
         leading: IconButton(onPressed: (){
           Get.back();
         }, icon: const Icon(Icons.arrow_back_ios,color: Color.fromARGB(255, 250, 198, 65),)),
-        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        backgroundColor:  CasinoColors.secondary,
         title: const CasinoText(text: 'Invoice',color: Color.fromARGB(255, 250, 198, 65),fontWeight: FontWeight.w600,),
         actions: [
           IconButton(onPressed: () async {

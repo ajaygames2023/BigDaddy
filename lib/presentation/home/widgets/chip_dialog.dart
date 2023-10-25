@@ -1,3 +1,4 @@
+import 'package:casino/utils/constants/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,7 +84,7 @@ String totalAmountWithDiscount(String value) {
               children: [
                 const CasinoText(text: 'IsDiscount (10%)'),
               CupertinoSwitch(
-                activeColor: const Color.fromARGB(255, 246, 209, 115),
+                activeColor: CasinoColors.primary,
               value: isDiscount,
               onChanged: (value) {
                 setState(() {

@@ -46,12 +46,12 @@ class CasinoButton extends StatelessWidget {
               Color.fromARGB(255, 243, 215, 143),
               Color.fromARGB(255, 239, 186, 51),
             ]) : null,
-           // border: Border.all(color: (enabled ?? true) ? borderColor ?? const Color.fromARGB(255, 0, 0, 0) : borderColor?.withOpacity(0.5) ?? CasinoColors.primary.withOpacity(0.5)),
+           // border: Border.all(color: (enabled ?? true) ? borderColor ?? const CasinoColors.secondary  : borderColor?.withOpacity(0.5) ?? CasinoColors.primary.withOpacity(0.5)),
             color: (enabled ?? true) ? backgroundColor ?? Color.fromARGB(255, 18, 17, 17) : backgroundColor?.withOpacity(0.5) ?? CasinoColors.primary.withOpacity(0.5)
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 13,vertical: 5),
-          child: Center(child: Text(title ?? 'Login',style:TextStyle(  fontSize: fontSize ?? 16,color: titleColor ?? Color.fromARGB(255, 0, 0, 0),fontWeight: fontWeight ?? FontWeight.w500,)),
+          child: Center(child: Text(title ?? 'Login',style:TextStyle(  fontSize: fontSize ?? 16,color: titleColor ?? CasinoColors.secondary,fontWeight: fontWeight ?? FontWeight.w500,)),
         ),
       ),
     ));

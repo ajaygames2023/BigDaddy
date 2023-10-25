@@ -1,4 +1,5 @@
 import 'package:casino/config/router/routes.dart';
+import 'package:casino/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -9,8 +10,8 @@ import 'utils/resources/translation/index.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Color.fromARGB(255, 0, 0, 0), // navigation bar color
-    statusBarColor: Color.fromARGB(255, 0, 0, 0), // status bar color
+    systemNavigationBarColor: CasinoColors.secondary, // navigation bar color
+    statusBarColor: CasinoColors.secondary, // status bar color
   ));
   runApp(const Casino());
 }
@@ -37,7 +38,7 @@ class _CasinoState extends State<Casino> {
       translations: CasinoTranslations(),
       locale: const Locale('en', 'EN'),
       getPages: AppPages.pages,
-      initialRoute: Routes.splash,
+      initialRoute: Routes.items,
     );
   }
 }

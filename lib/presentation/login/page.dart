@@ -28,7 +28,7 @@ class Login extends GetView<LoginController> {
                 Container(
                   height: double.infinity,
                   width: double.infinity,
-                  color: const Color.fromARGB(255, 0, 0, 0),
+                  color: CasinoColors.secondary,
                   child: SingleChildScrollView(
                         child: Column(
                           children: <Widget>[
@@ -43,7 +43,7 @@ class Login extends GetView<LoginController> {
                                 // ])
                               ),
                               child: const Center(
-                                child: Text("Customer Onboarding", style: TextStyle(color: Color.fromARGB(255, 246, 209, 115), fontSize: 20, fontWeight: FontWeight.bold),),
+                                child: Text("Customer Onboarding", style: TextStyle(color: CasinoColors.primary, fontSize: 20, fontWeight: FontWeight.bold),),
                               ),
                             ),
                             Container(
@@ -63,7 +63,7 @@ class Login extends GetView<LoginController> {
                                   FadeAnimation(1.8, Container(
                                     padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
-                                      color: const Color.fromARGB(255, 246, 209, 115),
+                                      color: CasinoColors.primary,
                                       borderRadius: BorderRadius.circular(10),
                                       boxShadow: const [
                                         BoxShadow(
@@ -80,14 +80,14 @@ class Login extends GetView<LoginController> {
                                         controller: controller.phoneController,
                                         keyboardType: TextInputType.phone,
                                         cursorColor: Colors.black,
-                                        style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0),fontWeight: FontWeight.bold),
+                                        style: const TextStyle(color: CasinoColors.secondary,fontWeight: FontWeight.bold),
                                         inputFormatters:[
                                           LengthLimitingTextInputFormatter(10),
                                         ],
                                         decoration: const InputDecoration(
                                           border: InputBorder.none,
                                           hintText: "Enter Phone number",
-                                          hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0),fontWeight: FontWeight.bold),
+                                          hintStyle: TextStyle(color: CasinoColors.secondary,fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                     ),
@@ -101,7 +101,7 @@ class Login extends GetView<LoginController> {
                                   Container(
                                     height: 70,
                                     decoration: BoxDecoration(
-                                      color: const Color.fromARGB(255, 246, 209, 115),
+                                      color: CasinoColors.primary,
                                       borderRadius: BorderRadius.circular(10)
                                     ),
                                     padding: const EdgeInsets.all(4.0),

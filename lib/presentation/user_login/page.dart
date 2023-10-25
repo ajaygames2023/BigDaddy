@@ -1,8 +1,8 @@
 
 import 'package:casino/global_widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../../utils/constants/colors.dart';
 import 'controller.dart';
 class UserLogin extends GetView<UserLoginController> {
   const UserLogin({super.key});
@@ -21,7 +21,7 @@ class UserLogin extends GetView<UserLoginController> {
                 Container(
                   height: double.infinity,
                   width: double.infinity,
-                  color: const Color.fromARGB(255, 0, 0, 0),
+                  color: CasinoColors.secondary,
                   child: SingleChildScrollView(
                         child: Column(
                           children: <Widget>[
@@ -36,7 +36,7 @@ class UserLogin extends GetView<UserLoginController> {
                                 // ])
                               ),
                               child: const Center(
-                                child: Text("Login User", style: TextStyle(color: const Color.fromARGB(255, 246, 209, 115), fontSize: 20, fontWeight: FontWeight.bold),),
+                                child: Text("Login User", style: TextStyle(color: CasinoColors.primary, fontSize: 20, fontWeight: FontWeight.bold),),
                               ),
                             ),
                             Container(
@@ -57,7 +57,7 @@ class UserLogin extends GetView<UserLoginController> {
                                   Container(
                                     padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
-                                      color: const Color.fromARGB(255, 246, 209, 115),
+                                      color: CasinoColors.primary,
                                       borderRadius: BorderRadius.circular(10),
                                       boxShadow: const [
                                         BoxShadow(
@@ -74,14 +74,14 @@ class UserLogin extends GetView<UserLoginController> {
                                             controller: controller.userId,
                                            // keyboardType: TextInputType.phone,
                                             cursorColor: Colors.black,
-                                            style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0),fontWeight: FontWeight.bold),
+                                            style: const TextStyle(color: CasinoColors.secondary,fontWeight: FontWeight.bold),
                                             // inputFormatters:[
                                             //   LengthLimitingTextInputFormatter(10),
                                             // ],
                                             decoration: const InputDecoration(
                                               border: InputBorder.none,
                                               hintText: "Enter user id",
-                                              hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0),fontWeight: FontWeight.bold),
+                                              hintStyle: TextStyle(color: CasinoColors.secondary,fontWeight: FontWeight.bold),
                                             ),
                                           )
                                         ),
@@ -90,7 +90,7 @@ class UserLogin extends GetView<UserLoginController> {
                                   Container(
                                     padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
-                                      color: const Color.fromARGB(255, 246, 209, 115),
+                                      color: CasinoColors.primary,
                                       borderRadius: BorderRadius.circular(10),
                                       boxShadow: const [
                                         BoxShadow(
@@ -107,14 +107,14 @@ class UserLogin extends GetView<UserLoginController> {
                                             controller: controller.password,
                                            // keyboardType: TextInputType.phone,
                                             cursorColor: Colors.black,
-                                            style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0),fontWeight: FontWeight.bold),
+                                            style: const TextStyle(color: CasinoColors.secondary,fontWeight: FontWeight.bold),
                                             // inputFormatters:[
                                             //   LengthLimitingTextInputFormatter(10),
                                             // ],
                                             decoration: const InputDecoration(
                                               border: InputBorder.none,
                                               hintText: "Enter password",
-                                              hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0),fontWeight: FontWeight.bold),
+                                              hintStyle: TextStyle(color: CasinoColors.secondary,fontWeight: FontWeight.bold),
                                             ),
                                           )
                                         ),

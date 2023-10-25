@@ -4,7 +4,7 @@ import 'package:casino/presentation/verification/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../global_widgets/radio.dart';
-import 'widgets/documents.dart';
+import '../../utils/constants/colors.dart';
 
 class Verification extends GetView<VerificationController> {
   const Verification({super.key});
@@ -15,9 +15,9 @@ class Verification extends GetView<VerificationController> {
       appBar: AppBar(
         leading: IconButton(onPressed: (){
           Get.back();
-        }, icon: const Icon(Icons.arrow_back_ios,color: Color.fromARGB(255, 250, 198, 65),)),
-        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-        title: const CasinoText(text: 'KYC Verification',color: Color.fromARGB(255, 250, 198, 65),fontWeight: FontWeight.bold,),
+        }, icon: const Icon(Icons.arrow_back_ios,color: CasinoColors.primary,)),
+        backgroundColor:  CasinoColors.secondary,
+        title: const CasinoText(text: 'KYC Verification',color: CasinoColors.primary,fontWeight: FontWeight.bold,),
          ),
       body: SafeArea(
         child: GetBuilder<VerificationController>(
@@ -30,7 +30,7 @@ class Verification extends GetView<VerificationController> {
                       child: Container(
                         width: double.infinity,
                         decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 0, 0, 0),
+                          color: CasinoColors.secondary,
                           image: DecorationImage(image: AssetImage('assets/images/background.jpg'),fit: BoxFit.fitHeight,opacity: 0.3)
                         ),
                         child: SingleChildScrollView(

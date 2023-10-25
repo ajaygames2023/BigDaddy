@@ -66,7 +66,6 @@ class ItemsController extends GetxController {
   }
 
   void paymentGate() {
-    print(upiAppsListAndroid);
     Get.bottomSheet(
       Payment(upiAppsListAndroid: upiAppsListAndroid,),
       backgroundColor: Colors.black,

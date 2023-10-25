@@ -13,8 +13,8 @@ class OTPUI extends StatelessWidget {
     return PinInputTextField(
       pinLength: 6,
       decoration: BoxLooseDecoration(
-      bgColorBuilder: PinListenColorBuilder(const Color.fromARGB(255, 246, 209, 115), const Color.fromARGB(255, 246, 209, 115)),
-      strokeColorBuilder: PinListenColorBuilder(Color.fromARGB(153, 0, 0, 0), Color.fromARGB(153, 0, 0, 0)),
+      bgColorBuilder: PinListenColorBuilder( CasinoColors.primary,  CasinoColors.primary),
+      strokeColorBuilder: PinListenColorBuilder(CasinoColors.secondary, CasinoColors.secondary),
       ),
       controller: pinEditingController,
       textInputAction: TextInputAction.go,

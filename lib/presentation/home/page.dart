@@ -2,6 +2,7 @@ import 'package:casino/global_widgets/text.dart';
 import 'package:casino/presentation/home/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../utils/constants/colors.dart';
 import 'widgets/drawer.dart';
 import 'widgets/tariffs_card.dart';
 
@@ -12,7 +13,7 @@ class Items extends GetView<ItemsController> {
   Widget build(BuildContext context) {
     return Scaffold(
      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        backgroundColor: CasinoColors.secondary,
         title: const CasinoText(text: 'Our Packages',color: Color.fromARGB(255, 250, 198, 65),fontWeight: FontWeight.bold,),
          ),
          drawer: DrawerWidget(controller: controller,),

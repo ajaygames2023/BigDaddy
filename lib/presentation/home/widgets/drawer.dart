@@ -16,7 +16,7 @@ class DrawerWidget extends StatelessWidget {
        // textStyle: GoogleFonts.ibmPlexSans(),
         fontSize: 20,
         fontWeight: FontWeight.w500,
-        color: const Color.fromARGB(255, 246, 209, 115));
+        color: CasinoColors.primary);
   }
 
   Widget getIcon(String image, {bool? isAssetImage}) {
@@ -30,7 +30,7 @@ class DrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Drawer(
-        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        backgroundColor: CasinoColors.secondary,
         width: MediaQuery.of(context).size.width * 0.5,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
