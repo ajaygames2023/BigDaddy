@@ -1,7 +1,11 @@
 import 'dart:io';
+import 'package:casino/global_widgets/bottom_sheet/index.dart';
 import 'package:casino/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+
+import '../../global_widgets/bottom_sheet/controller.dart';
 
 class Helper {
   Helper._();
@@ -45,5 +49,22 @@ class Helper {
         backgroundColor: const Color.fromARGB(255, 250, 198, 65),
         textColor: CasinoColors.black,
         fontSize: 16.0);
+  }
+
+  static void openBottomSheet({required Widget Function(CasinoBottomSheetController) child}) {
+    Get.bottomSheet(
+      CasinoBottomSheet(child: child),
+      backgroundColor: CasinoColors.secondary,
+      ignoreSafeArea: false,
+      isDismissible: false,
+        shape: const RoundedRectangleBorder( // <-- SEE HERE
+          borderRadius: BorderRadius.vertical( 
+            top: Radius.circular(20.0),
+          ),
+          side: BorderSide(
+          color: CasinoColors.primary
+        ) 
+        ),
+    );
   }
 }

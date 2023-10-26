@@ -47,7 +47,7 @@ class Items extends GetView<ItemsController> {
                                 title: controller.chipsList[index].title, 
                                 amount: controller.chipsList[index].minAmount,
                                 image: controller.chipsList[index].image,
-                                 onTap: () {controller.onBook(id: controller.chipsList[index].id, amount: controller.chipsList[index].minAmount,);},)),
+                                 onTap: () {controller.onBook(id: controller.chipsList[index].id, amount: controller.chipsList[index].minAmount,title: 'chip');},)),
                           );
                         }),
                       ),
@@ -71,7 +71,7 @@ class Items extends GetView<ItemsController> {
                                 title: controller.chipsList[index].title, 
                                 amount: controller.chipsList[index].minAmount,
                                 image: controller.chipsList[index].image,
-                                onTap: () {controller.onBook(id: controller.chipsList[index].id, amount: controller.chipsList[index].minAmount,);})),
+                                onTap: () {controller.onBook(id: controller.chipsList[index].id, amount: controller.chipsList[index].minAmount,title: controller.chipsList[index].title);})),
                           );
                         }),
                       ),

@@ -1,3 +1,4 @@
+import 'package:casino/global_widgets/pg.dart';
 import 'package:casino/presentation/create_invoice/index.dart';
 import 'package:casino/presentation/home/binding.dart';
 import 'package:casino/presentation/home/page.dart';
@@ -10,6 +11,7 @@ import 'package:casino/presentation/verification/page.dart';
 import 'package:get/get.dart';
 import '../../presentation/create_invoice/binding.dart';
 import '../../presentation/login/page.dart';
+import '../../presentation/payment/binding.dart';
 import '../../presentation/user_login/binding.dart';
 import 'routes.dart';
 
@@ -44,6 +46,11 @@ abstract class AppPages {
       name: Routes.invoice,
       page: () => const Invoice(),
       binding: InvoiceBinding(),
+    ),
+    GetPage(
+      name: Routes.payment,
+      page: () => const Payment(),
+      binding: PaymentBinding(),
     ),
     ];
 }

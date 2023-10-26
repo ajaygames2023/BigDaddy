@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:casino/domain/domain/api_constants.dart';
 import 'package:casino/domain/repositories/api_calls.dart';
+import 'package:casino/global_widgets/buttons.dart';
 import 'package:casino/global_widgets/dialog.dart';
 import 'package:casino/global_widgets/pg.dart';
+import 'package:casino/global_widgets/text.dart';
+import 'package:casino/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -12,6 +15,8 @@ import 'package:upi_india/upi_app.dart';
 import 'package:upi_india/upi_india.dart';
 
 import '../../config/router/routes.dart';
+import '../../domain/models/invoice/invoice_data.dart';
+import '../../domain/models/invoice/invoice_generate.dart';
 import '../../utils/helper/helper.dart';
 import 'widgets/chip_dialog.dart';
 
@@ -19,7 +24,8 @@ class ItemsController extends GetxController {
 
   bool isLoading = true;
   Map<String, dynamic>? logoutRes;
-  Map<String, dynamic>? generateInvoice;
+ // Map<String, dynamic>? generateInvoice;
+  GenerateInvoiceModel? invoiceData;
   List<String> selectedList = [];
   TextEditingController chipAmount = TextEditingController();
   double totalAmount = 0;
@@ -34,6 +40,7 @@ class ItemsController extends GetxController {
   List<UpiObject> upiAppsListAndroid = [];
   MethodChannel methodChannel = const MethodChannel("get_upi");
   UpiIndia upiIndia = UpiIndia();
+  List<UpiApp>? apps;
 
 
 
@@ -54,25 +61,83 @@ class ItemsController extends GetxController {
     update();
   }
 
-  void onBook({required int id,required String amount}) {
-    //  getUpi();
-    //  print('vv');
-  //   GetUPI.openNativeIntent(
-  //   url: 'your mandate url',
-  // );
-    
-    getGenerateInvoice(id: id, amount: amount, discount: '0', amountAfterDiscoun: amount);
+  Widget getSelectedPackage({String? title,required String amount,Alignment? align}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: [
+          Expanded(
+            child: SizedBox(
+              child: Align(
+                alignment: align ?? Alignment.centerLeft,
+                child: CasinoText(text: title ?? '',color: CasinoColors.white)),
+            )),
+          const  SizedBox(width: 10,),
+          SizedBox(
+            width: 100,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: CasinoText(text: 'Rs $amount',color: CasinoColors.white))),
+        ],
+      ),
+    );
+  }
+
+  Widget getSheetWidget({String? packageTitle,String? packageAmount,required VoidCallback onTap}) {
+    InvoiceData data = invoiceData?.invoiceData! ?? InvoiceData();
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const CasinoText(text: 'Package Details',color: CasinoColors.white,fontWeight: FontWeight.bold,fontSize: 18,),
+          const SizedBox(height: 10,),
+          getSelectedPackage(title: data.itemDescription,amount: data.price ?? '0'),
+          getSelectedPackage(title: 'Less Discount',amount: data.discount!.toStringAsFixed(2)),
+          getSelectedPackage(title: 'Supply of Actionable Claim ',amount: data.amountAfterDiscount!.toStringAsFixed(2)),
+          Padding(
+            padding: const EdgeInsets.only(left: 50),
+            child: getSelectedPackage(title: 'SGST (14%) :', amount: data.sGSTAmount!.toStringAsFixed(2),align: Alignment.centerRight),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 50),
+            child: getSelectedPackage(title: 'CGST (14%) :', amount: data.cGSTAmount!.toStringAsFixed(2),align: Alignment.centerRight),
+          ),
+          const Divider(color: CasinoColors.white,),
+           Padding(
+             padding: const EdgeInsets.only(left: 0),
+             child: getSelectedPackage(title: 'Total Payable Amount :', amount: num.parse(data.totalAmount!).toStringAsFixed(2),align: Alignment.centerRight),
+           ),
+          const SizedBox(height: 20,),
+             Align(
+            alignment: Alignment.center,
+            child: CasinoButton(title: 'Pay Now',height: 40,fontSize: 20,onTap: onTap,)),
+
+        ],
+      ),
+    );
+  }
+
+  void onBook({required int id,required String amount,required String title}) async{
+    await getGenerateInvoice(id: id, amount: amount, discount: '0', amountAfterDiscoun: amount).then((_) async {
+      await getUpi();
+     Helper.openBottomSheet(child: (p0) => getSheetWidget(
+      packageTitle: title,
+      packageAmount: amount,
+      onTap: () {
+      Get.back();
+      getPaymentMethod(id: id,amount: amount);
+    },));
+
+    });
+  //  getGenerateInvoice(id: id, amount: amount, discount: '0', amountAfterDiscoun: amount);
   //  Get.toNamed(Routes.invoice,arguments: {'id':id,'amount':amount});
   }
 
-  void paymentGate() {
-    Get.bottomSheet(
-      Payment(upiAppsListAndroid: upiAppsListAndroid,),
-      backgroundColor: Colors.black,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-    );
+  void getPaymentMethod({required int id,required String amount}) {
+    Helper.openBottomSheet(child: (p0) => Payment(upiAppsListAndroid: upiAppsListAndroid,onSuccess: (){
+      Get.toNamed(Routes.invoice,arguments: {'link': invoiceData!.invoiceUrl ?? Urls.pdf});
+    },),);
   }
 
   void drawerActions(String goToScreen) async {
@@ -120,7 +185,7 @@ class ItemsController extends GetxController {
     } finally {}
   }
 
-  void getGenerateInvoice({required int id,required String amount,required String discount, required String amountAfterDiscoun }) async {
+  getGenerateInvoice({required int id,required String amount,required String discount, required String amountAfterDiscoun }) async {
     try {
       var param = {
          "amount": amount,
@@ -131,9 +196,9 @@ class ItemsController extends GetxController {
           "Remarks": "test",
           ...Helper.instance.getParams()
       };
-      generateInvoice = await ApiCallRepo.instance.generateInvoice(param);
-      if (generateInvoice?['respCode'] == 100) {
-        Get.toNamed(Routes.invoice,arguments: {'link':generateInvoice?['respData']['invoice_url'] ?? Urls.pdf});
+      invoiceData = await ApiCallRepo.instance.generateInvoice(param);
+      if (invoiceData!= null) {
+       // Get.toNamed(Routes.invoice,arguments: {'link':generateInvoice?['respData']['invoice_url'] ?? Urls.pdf});
       } else {
         Helper.toast('Something when wrong.');
       }
@@ -143,21 +208,23 @@ class ItemsController extends GetxController {
     } finally {}
   }
 
-  List<UpiApp>? apps;
-
       Future<void> getUpi() async {
-        upiIndia.getAllUpiApps(mandatoryTransactionId: false).then((value) {
-          print(value.length);
+        // upiIndia.getAllUpiApps(mandatoryTransactionId: true).then((value) {
+        //   print('abc');
+        //   print(value);
+        //   apps = value;
+        //   update();
+        //   print(value.length);
  
-        }).catchError((e) {
-          print(e);
-          apps = [];
-        });
-      // if (Platform.isAndroid) {
-      //     var value = await GetUPI.apps();
-      //     print(value.data.length);
-      //    // upiAppsListAndroid = value.data;
-      // }
+        // }).catchError((e) {
+        //   print(e);
+        //   apps = [];
+        // });
+      if (Platform.isAndroid) {
+          var value = await GetUPI.apps();
+          print(value.data.length);
+          upiAppsListAndroid = value.data;
+      }
     }
 
 }

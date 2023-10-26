@@ -7,4 +7,5 @@ abstract class Routes {
   static const verification = '/verification';
   static const items = '/items';
   static const invoice = '/invoice';
+  static const payment = '/payment';
 }

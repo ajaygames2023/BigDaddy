@@ -7,6 +7,7 @@ import '../../utils/print.dart';
 import '../domain/api_call.dart';
 import '../domain/api_constants.dart';
 import '../models/card_details.dart';
+import '../models/invoice/invoice_generate.dart';
 import '../models/messages.dart';
 
 class ApiCallRepo {
@@ -124,10 +125,11 @@ class ApiCallRepo {
     }
   }
 
-  Future<Map<String, dynamic>> generateInvoice(Map<String, dynamic> params) async {
+  Future<GenerateInvoiceModel> generateInvoice(Map<String, dynamic> params) async {
     try {
       final apiRes = await ApiCalls.instance.post(url: Urls.generateInvoice, body: params);
-      return Map.castFrom(json.decode(apiRes.response.toString()));
+      final jsonData = json.decode(apiRes.response.toString());
+      return GenerateInvoiceModel.fromJson(jsonData['respData']);
     } catch (e) {
       println(PrintTag.e, e.toString());
       rethrow;
