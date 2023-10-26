@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -90,31 +89,30 @@ class InvoiceController extends GetxController {
     void downloadInvoice(String url) async {
     try {
       print("Update Started");
-      final downloadPath = File(
-          "${await getDownloadPath()}invoice_2.pdf");
-      Dio().download(url, downloadPath.path,
-          onReceiveProgress: (received, total) {
-        if (total != -1) {
-          onDownload = "${(received / total * 100).toStringAsFixed(0)}%";
-        }
-      }).then((value) async {
+      final downloadPath = File("${await getDownloadPath()}invoice_2.pdf");
+      // Dio().download(url, downloadPath.path,
+      //     onReceiveProgress: (received, total) {
+      //   if (total != -1) {
+      //     onDownload = "${(received / total * 100).toStringAsFixed(0)}%";
+      //   }
+      // }).then((value) async {
         
-        // print("Update Completed");
-        // print(downloadPath.path);
-        // print(await File(downloadPath.path).exists()); 
-        var permission = await Permission.manageExternalStorage.request();
-        if(permission.isGranted) {
-          await isInstalled().then((_) async {
-            await WhatsappShare.shareFile(
-            phone: Helper.customerMobileNbr,
-            filePath: [downloadPath.path],
-          );
-          });
-        } else {
-          await Permission.manageExternalStorage.isGranted;
-        }
+      //   // print("Update Completed");
+      //   // print(downloadPath.path);
+      //   // print(await File(downloadPath.path).exists()); 
+      //   var permission = await Permission.manageExternalStorage.request();
+      //   if(permission.isGranted) {
+      //     await isInstalled().then((_) async {
+      //       await WhatsappShare.shareFile(
+      //       phone: Helper.customerMobileNbr,
+      //       filePath: [downloadPath.path],
+      //     );
+      //     });
+      //   } else {
+      //     await Permission.manageExternalStorage.isGranted;
+      //   }
 
-      });
+      // });
     } catch (e) {
       print(e);
     }
@@ -128,12 +126,18 @@ class InvoiceController extends GetxController {
 
 
   Future<String?> getDownloadPath() async {
-    var dPata = await getExternalStorageDirectory();
-    if (dPata != null) {
-      var split = dPata.path.toString().split("Android");
-      return "${split[0]}Download/";
+    Directory? dPata;
+    if(Platform.isAndroid) {
+      dPata = await getExternalStorageDirectory();
+      if (dPata != null) {
+        var split = dPata.path.toString().split("Android");
+        return "${split[0]}Download/";
+      } else {
+        return null;
+      }
     } else {
-      return null;
+      dPata = await getApplicationSupportDirectory();
+      return dPata.path;
     }
   }
 

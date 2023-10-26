@@ -11,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_upi/get_upi.dart';
-import 'package:upi_india/upi_app.dart';
-import 'package:upi_india/upi_india.dart';
 
 import '../../config/router/routes.dart';
 import '../../domain/models/invoice/invoice_data.dart';
@@ -39,8 +37,6 @@ class ItemsController extends GetxController {
    List<UpiObject> upiAppsList = [];
   List<UpiObject> upiAppsListAndroid = [];
   MethodChannel methodChannel = const MethodChannel("get_upi");
-  UpiIndia upiIndia = UpiIndia();
-  List<UpiApp>? apps;
 
 
 

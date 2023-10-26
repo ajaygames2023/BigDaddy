@@ -73,8 +73,8 @@ class VerificationController extends GetxController {
     // image picker
   void chooseWhereToPickImage(String imageType,XFile? image) async {
      image = await pickImage('camera');
-                setImageToController(imageType,image);
-                update();
+      setImageToController(imageType,image);
+      update();
     // Get.defaultDialog(
     //   title: 'Select Image',
     //   content: SizedBox(

@@ -9,10 +9,9 @@ import 'utils/resources/translation/index.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: CasinoColors.secondary, // navigation bar color
-    statusBarColor: CasinoColors.secondary, // status bar color
-  ));
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+   statusBarColor: CasinoColors.secondary, // optional
+));
   runApp(const Casino());
 }
 
@@ -28,17 +27,19 @@ class _CasinoState extends State<Casino> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      builder: (context, child) => Center(
-        child: child!,
+    return SafeArea(
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        builder: (context, child) => Center(
+          child: child!,
+        ),
+        title: 'Casino',
+        defaultTransition: Transition.rightToLeft,
+        translations: CasinoTranslations(),
+        locale: const Locale('en', 'EN'),
+        getPages: AppPages.pages,
+        initialRoute: Routes.items,
       ),
-      title: 'Casino',
-      defaultTransition: Transition.rightToLeft,
-      translations: CasinoTranslations(),
-      locale: const Locale('en', 'EN'),
-      getPages: AppPages.pages,
-      initialRoute: Routes.splash,
     );
   }
 }
