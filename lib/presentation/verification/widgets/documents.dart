@@ -28,14 +28,10 @@ class Documents extends StatelessWidget {
   Widget build(BuildContext context) {
     return (groupValue != 'Aadhar Card') 
     ? SizedBox(
-      width: 200,
+      width: MediaQuery.of(context).size.width * 0.5,
       child: DottedBorder(
         color:const Color.fromARGB(255, 250, 198, 65),
-        child: Column(
-          children: [
-            DocumentUpload(image: panImage,callBack: () => callBack!('pan')),
-          ],
-        )),
+        child: Center(child: DocumentUpload(image: panImage,callBack: () => callBack!('pan')))),
     )
     : Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -45,25 +41,13 @@ class Documents extends StatelessWidget {
           Expanded(
             child: DottedBorder(
               color:const Color.fromARGB(255, 250, 198, 65),
-              child: Column(
-                children: [
-                  // CasinoText(text: (aadharFrontImage !=null) ? aadharFrontImage!.name: 'Front',color:const Color.fromARGB(255, 250, 198, 65) ,),
-                  // const SizedBox(height: 5,),
-                  DocumentUpload(image: aadharFrontImage,callBack: () => callBack!('fontAadhar'),),
-                ],
-              )),
+              child: Center(child: DocumentUpload(image: aadharFrontImage,callBack: () => callBack!('fontAadhar'),))),
           ),
-          const SizedBox(width: 30,),
+          SizedBox(width: MediaQuery.of(context).size.width * 0.1,),
           Expanded(
             child: DottedBorder(
               color:const Color.fromARGB(255, 250, 198, 65),
-              child: Column(
-                children: [
-                  // CasinoText(text: (aadharBackImage !=null) ? aadharBackImage!.name: 'Back',color:const Color.fromARGB(255, 250, 198, 65) ,),
-                  // const SizedBox(height: 5,),
-                  DocumentUpload(image: aadharBackImage,callBack: () => callBack!('backAadhar'),),
-                ],
-              )),
+              child: Center(child: DocumentUpload(image: aadharBackImage,callBack: () => callBack!('backAadhar'),))),
           ),
         ],
       ),

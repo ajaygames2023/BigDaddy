@@ -131,7 +131,7 @@ class DrawerWidget extends StatelessWidget {
                     //     '${Urls.cdnbase}/fantasy_sports/app/assets/images/Icon%20awesome-wallet.svg'),
                     title: getText('Tarrif'),
                     onTap: () {
-                      controller.drawerActions('Tarrif');
+                     // controller.drawerActions('Tarrif');
                     },
                   ),
                   // ListTile(
@@ -153,7 +153,7 @@ class DrawerWidget extends StatelessWidget {
                     title: getText("Chips"),
                     onTap: () {
                       Get.back();
-                      controller.drawerActions('Chips');
+                   //   controller.drawerActions('Chips');
                     },
                   ),
                   ListTile(
@@ -164,7 +164,7 @@ class DrawerWidget extends StatelessWidget {
                     //     '${Urls.cdnbase}/fantasy_sports/app/assets/images/Icon%20material-slideshow.svg'),
                     title: getText("Others"),
                     onTap: () {
-                      controller.drawerActions('Contact');
+                  //    controller.drawerActions('Contact');
                     },
                   ),
               ]),
@@ -181,7 +181,7 @@ class DrawerWidget extends StatelessWidget {
                       //     '${Urls.cdnbase}/fantasy_sports/app/assets/images/log-out.png'),
                       title: getText('Logout'),
                       onTap: () {
-                        controller.drawerActions('logout');
+                     //   controller.drawerActions('logout');
                       },
                     ),
                   ],

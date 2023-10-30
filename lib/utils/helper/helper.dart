@@ -11,17 +11,19 @@ class Helper {
   Helper._();
   static final instance = Helper._();
   static String deviceTypes() {
-    if (Platform.isAndroid || Platform.isIOS) {
-      return 'WEB_TABLET';
-    } else {
-      return 'WEB_DESKTOP';
-    }
+    return 'WEB_DESKTOP'; 
+    // if (Platform.isAndroid || Platform.isIOS) {
+    //   return 'WEB_TABLET';
+    // } else {
+    //   return 'WEB_DESKTOP';
+    // }
   }
-
+  static int roleId = 3;
   bool isUserOnBoarded = false;
   static String usertoken = '';
   static String token = '';
   static String userId = '';
+  static String userName = '';
   static String customerId = '';
   static String customerMobileNbr = '';
   static const int gId = 1;
@@ -40,15 +42,16 @@ class Helper {
     };
   }
 
-  static void toast(String title, {Toast? toastLength}) {
-    Fluttertoast.showToast(
-        msg: title,
-        toastLength: toastLength ?? Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: const Color.fromARGB(255, 250, 198, 65),
-        textColor: CasinoColors.black,
-        fontSize: 16.0);
+  static void toast(String title, {Duration? duration}) {
+    // Fluttertoast.showToast(
+    //     msg: title,
+    //     toastLength: toastLength ?? Toast.LENGTH_SHORT,
+    //     gravity: ToastGravity.BOTTOM,
+    //     timeInSecForIosWeb: 1,
+    //     backgroundColor: const Color.fromARGB(255, 250, 198, 65),
+    //     textColor: CasinoColors.black,
+    //     fontSize: 16.0);
+      Get.snackbar('Error', title,backgroundColor: CasinoColors.secondary,colorText: CasinoColors.primary,duration: duration ?? const Duration(seconds: 1));
   }
 
   static void openBottomSheet({required Widget Function(CasinoBottomSheetController) child}) {

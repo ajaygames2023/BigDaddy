@@ -9,14 +9,16 @@ class UserLoginController extends GetxController {
 
   TextEditingController userId = TextEditingController();
   TextEditingController password = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   bool isLoading = true;
+  bool passwordVisible = false;
   Map<String, dynamic>? userLogin;
 
 
   void onLogin() {
     userId.text = '';
     password.text = '';
-    Get.toNamed(Routes.login);
+    Get.toNamed((Helper.roleId != 1) ? Routes.login : Routes.items,);
     update();
   }
 
@@ -30,10 +32,11 @@ class UserLoginController extends GetxController {
   }
 
   void getUserLogin() async {
-    // Get.dialog(
-    //   DialogBox(title: 'Chips', child: Text('abc'))
-    // );
-    final params = <String, dynamic>{
+    final isValid = formKey.currentState!.validate();
+    if (!isValid) {
+      Helper.toast('Please fill correct credentials');
+    } else {
+       final params = <String, dynamic>{
       "email": userId.text,
       'password': generateMd5(password.text),
     //  ...Helper.instance.getParams(),
@@ -44,6 +47,8 @@ class UserLoginController extends GetxController {
       if (userLogin?['respCode'] == 100) {
         Helper.userId = userLogin?['respData']['adminId'].toString() ?? '';
         Helper.usertoken = userLogin?['respData']['token'].toString() ?? '';
+        Helper.roleId = userLogin?['respData']['roleId'] ?? 3;
+        Helper.userName = userLogin?['respData']['name'].toString() ?? '';
         onLogin();
       } else {
         Helper.toast(userLogin?['message']);
@@ -53,6 +58,8 @@ class UserLoginController extends GetxController {
     } finally {
       loadingData();
     }
+    }
+   
   }
 
   

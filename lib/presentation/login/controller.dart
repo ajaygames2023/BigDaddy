@@ -65,7 +65,7 @@ class LoginController extends GetxController {
       verifyOtp = await ApiCallRepo.instance.verifyOtp(params);
       if (verifyOtp?['respCode'] == 100) {
           userDetails = UserDetails.fromJson(verifyOtp?['respData']!);
-        Get.toNamed(Routes.verification,);
+          Get.toNamed(Routes.verification);
         Helper.token = userDetails?.token ?? '';
         Helper.customerId = userDetails?.userId.toString() ?? '';
         Helper.customerMobileNbr = phoneController.text;

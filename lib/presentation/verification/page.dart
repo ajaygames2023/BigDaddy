@@ -62,7 +62,8 @@ class Verification extends GetView<VerificationController> {
                         ),
                       ),
                     ),
-                    if(controller.isNext) Container(
+                   // if(controller.isNext)
+                     Container(
                       color: Colors.black,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

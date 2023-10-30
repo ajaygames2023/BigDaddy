@@ -46,7 +46,7 @@ class RadioButtonsState extends State<RadioButtons> {
           // ),
           const SizedBox(height: 12,),
           Transform.scale(
-            scale: 1.3,
+            scale: 1,
             child: Padding(
               padding: const EdgeInsets.only(left: 30),
               child: RadioGroup<String>.builder(

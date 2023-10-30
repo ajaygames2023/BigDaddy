@@ -1,7 +1,5 @@
-import 'package:casino/global_widgets/buttons.dart';
 import 'package:casino/global_widgets/text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class DialogBox extends StatelessWidget {
   const DialogBox({required this.title,this.onClose,this.buttonTitle,this.onTap,required this.child,this.padding,this.titleFont,this.titleColor,this.enabled,super.key});
@@ -23,7 +21,7 @@ class DialogBox extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(7.0))),
       title: Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.of(context).size.width/2,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.only(topLeft: Radius.circular(7),topRight: Radius.circular(7)),
           color: titleColor ?? Colors.black,

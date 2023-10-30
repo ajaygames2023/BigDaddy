@@ -1,4 +1,5 @@
 import 'package:casino/global_widgets/text.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -135,7 +136,13 @@ class VerificationController extends GetxController {
     XFile? image;
     switch (type) {
       case 'camera':
-        image = await picker.pickImage(source: ImageSource.camera,imageQuality: 5);
+      print('camera');
+      const XTypeGroup typeGroup = XTypeGroup(
+        label: 'images',
+        extensions: <String>['jpg', 'png'],
+      );
+      image = await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+      //  image = await picker.pickImage(source: ImageSource.camera,imageQuality: 5);
         break;
       case 'gallery':
         image = await picker.pickImage(source: ImageSource.gallery,imageQuality: 5);
@@ -188,14 +195,14 @@ class VerificationController extends GetxController {
         if (panVerified?["respCode"] == 100 ||
             panVerified?["respCode"] == 101) {
               getAllData();
-              Helper.toast('Pan Card Upload Successfully', toastLength: Toast.LENGTH_LONG);
+              Helper.toast('Pan Card Upload Successfully', );
               update();
         } else {
-          Helper.toast(panVerified?["message"], toastLength: Toast.LENGTH_LONG);
+          Helper.toast(panVerified?["message"], );
         }
       } else {
         
-        Helper.toast('Please upload pan', toastLength: Toast.LENGTH_LONG);
+        Helper.toast('Please upload pan', );
       }
       
     } catch (e) {
@@ -222,15 +229,15 @@ class VerificationController extends GetxController {
             .aadharVerify(param, aadharFrontImage!, aadharBackImage!);
         if (aadharVerified?["respCode"] == 100) {
             getAllData();
-            Helper.toast(aadharVerified?["message"],toastLength: Toast.LENGTH_LONG);
+            Helper.toast(aadharVerified?["message"],);
             update();
         } else {
           Helper.toast(aadharVerified?["message"],
-              toastLength: Toast.LENGTH_LONG);
+              );
         }
       } else {
         loadingData();
-        Helper.toast('Please upload aadhar', toastLength: Toast.LENGTH_LONG);
+        Helper.toast('Please upload aadhar', );
       }
     } catch (e) {
       rethrow;
@@ -291,14 +298,10 @@ class VerificationController extends GetxController {
   }
 
   Widget getImage() {
-    print(groupValue);
-    print(panStatus);
-    print(aadharStatus);
     if(groupValue == 'PAN') {
       if(panStatus == '') {
         getCameraImage();
       }  else{
-        print('xxx');
         return getPanImage();
       }
     } 
@@ -314,8 +317,8 @@ class VerificationController extends GetxController {
 
   Widget getStatusPanImage(String image) {
     return SizedBox(
-      height: 200,
-      width: 200,
+      height: 400,
+      width: 400,
       child:Image.asset(image) ,
     );
   }
@@ -338,7 +341,7 @@ class VerificationController extends GetxController {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
-                height: 200,
+                height: 800,
                 child: Image.asset(image1)),
             ),
           ),
@@ -346,7 +349,7 @@ class VerificationController extends GetxController {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
-                height: 200,
+                height: 800,
                 child: Image.asset(image2)),
             ),
           ),

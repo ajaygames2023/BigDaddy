@@ -18,10 +18,10 @@ class DocumentUpload extends StatelessWidget {
     return GestureDetector(
       onTap: callBack,
       child: SizedBox(
-        height: 200,
+        height: MediaQuery.of(context).size.height * 0.5,
         child:  (image == null) ? const Center(
-          child: Icon(Icons.camera_alt_outlined,color: Color.fromARGB(255, 238, 197, 92),size: 100,),
-        ) : Image.file(File(image?.path ?? ''))),
+          child: Icon(Icons.camera_alt_outlined,color: Color.fromARGB(255, 238, 197, 92),size: 250,),
+        ) : Image.file(File(image?.path ?? ''),fit: BoxFit.contain,)),
     );
   }
 }
