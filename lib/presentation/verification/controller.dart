@@ -136,10 +136,9 @@ class VerificationController extends GetxController {
     XFile? image;
     switch (type) {
       case 'camera':
-      print('camera');
       const XTypeGroup typeGroup = XTypeGroup(
         label: 'images',
-        extensions: <String>['jpg', 'png'],
+        extensions: <String>['jpg', 'png', 'pdf'],
       );
       image = await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
       //  image = await picker.pickImage(source: ImageSource.camera,imageQuality: 5);

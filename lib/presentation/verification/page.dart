@@ -62,7 +62,7 @@ class Verification extends GetView<VerificationController> {
                         ),
                       ),
                     ),
-                   // if(controller.isNext)
+                    if(controller.isNext)
                      Container(
                       color: Colors.black,
                       child: Padding(

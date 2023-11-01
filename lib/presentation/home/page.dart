@@ -23,10 +23,10 @@ class Items extends GetView<ItemsController> {
                 controller.update();
               }, icon: const Icon(Icons.arrow_back_ios)):IconButton(onPressed: (){controller.logout();}, icon: const Icon(Icons.logout,color: Color.fromARGB(255, 250, 198, 65),)),
               title: CasinoText(text: 'Welcome   ${Helper.userName} / ${Helper.userId}',color: const Color.fromARGB(255, 250, 198, 65),fontWeight: FontWeight.bold,fontSize: 20,),
-              actions: const [
+              actions: [
                 Padding(
-                  padding: EdgeInsets.only(right: 40),
-                  child: Center(child: CasinoText(text: 'Bussiness Date : 01/01/2023',color: Color.fromARGB(255, 250, 198, 65),fontWeight: FontWeight.bold,fontSize: 20,)),
+                  padding: const EdgeInsets.only(right: 40),
+                  child: Center(child: CasinoText(text: 'Bussiness Date : ${Helper.bussinessDate}',color: Color.fromARGB(255, 250, 198, 65),fontWeight: FontWeight.bold,fontSize: 20,)),
                 ),
               ],
                ),

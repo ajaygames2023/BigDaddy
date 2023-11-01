@@ -136,5 +136,15 @@ class ApiCallRepo {
     }
   }
 
+  Future<Map<String, dynamic>> getKycStatus(Map<String, dynamic> params) async {
+    try {
+      final apiRes = await ApiCalls.instance.post(url: Urls.kycStatus, body: params);
+      return Map.castFrom(json.decode(apiRes.response.toString()));
+    } catch (e) {
+      println(PrintTag.e, e.toString());
+      rethrow;
+    }
+  }
+
 
 }

@@ -49,6 +49,7 @@ class UserLoginController extends GetxController {
         Helper.usertoken = userLogin?['respData']['token'].toString() ?? '';
         Helper.roleId = userLogin?['respData']['roleId'] ?? 3;
         Helper.userName = userLogin?['respData']['name'].toString() ?? '';
+        Helper.bussinessDate = userLogin?['respData']['bussinessDate'].toString() ?? '';
         onLogin();
       } else {
         Helper.toast(userLogin?['message']);

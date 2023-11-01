@@ -12,9 +12,11 @@ class PaymentDialog extends GetView<PaymentDialogController> {
   const PaymentDialog({
     required this.callBack,
     this.amount,
+    this.isKyc,
     super.key});
-  final Function(String? paymentMode,String? paymentType,String? txnNo) callBack;
+  final Function(String? paymentMode,String? paymentType,String? txnNo,String? panNo) callBack;
   final String? amount;
+  final bool? isKyc;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +89,7 @@ class PaymentDialog extends GetView<PaymentDialogController> {
                       ),
                     ),
                   ],
-                ) : (num.parse(amount??'') >= 200000) ? Row(
+                ) : (isKyc ?? false) ? (num.parse(amount??'') >= 200000 ) ? Row(
                   children: [
                     const CasinoText(text: 'PAN Number :'),
                     const SizedBox(width: 20,),
@@ -95,7 +97,7 @@ class PaymentDialog extends GetView<PaymentDialogController> {
                       width: 250,
                       height: 50,
                       child: TextFormField(
-                        controller: controller.txnNo,
+                        controller: controller.panNo,
                         inputFormatters:[
                           LengthLimitingTextInputFormatter(20),
                         ],
@@ -108,10 +110,10 @@ class PaymentDialog extends GetView<PaymentDialogController> {
                       ),
                     ),
                   ],
-                ) : const SizedBox.shrink(),
+                ) : const SizedBox.shrink():const SizedBox.shrink(),
                  const SizedBox(height: 40,),
                  Center(child: CasinoButton(title: 'Generate Invoice',height: 50,width: 300,fontSize: 20,fontWeight: FontWeight.bold,
-                 onTap: () => callBack(controller.paymentModeGroupValue,controller.paymentTypeGroupValue,controller.txnNo.text),
+                 onTap: () => callBack(controller.paymentModeGroupValue,controller.paymentTypeGroupValue,controller.txnNo.text,controller.panNo.text),
                  ))
               
               ],

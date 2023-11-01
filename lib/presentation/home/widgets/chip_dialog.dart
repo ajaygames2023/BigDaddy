@@ -3,9 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../domain/models/kycdata_status/index.dart';
+import '../../../domain/repositories/api_calls.dart';
 import '../../../global_widgets/buttons.dart';
 import '../../../global_widgets/text.dart';
 import '../../../utils/helper/helper.dart';
+import '../controller.dart';
 
 class Chips extends StatefulWidget {
   const Chips({
@@ -13,11 +16,13 @@ class Chips extends StatefulWidget {
     this.isDiscount,
     required this.totalAmount,
     required this.callBack,
+    this.controller,
     super.key});
   final TextEditingController amount;
+  final ItemsController? controller;
   final bool? isDiscount;
   final String totalAmount;
-  final Function(String amount,String discount,String amountAfterDiscoun) callBack;
+  final Function(String name,String userId,bool isVerified,String amount,String discount,String amountAfterDiscoun) callBack;
 
   @override
   State<Chips> createState() => _ChipsState();
@@ -32,10 +37,59 @@ String gstAmount = '0';
 bool isDiscount = false ;
 TextEditingController discountPercentage = TextEditingController();
 TextEditingController mobileNbr= TextEditingController();
+  Map<String,dynamic>? kycStatus;
+  List<KycDataStatus>? kycDataStatus;
+  String userName = '';
+  String customerName = '';
+  String userKycStatus = '';
+  String userId = '';
   @override
   void initState() {
     isDiscount = widget.isDiscount ?? false;
     super.initState();
+  }
+
+  String getUserName() {
+    if(kycDataStatus![0].aadharData!.status =="APPROVE") {
+      return kycDataStatus![0].aadharData!.name ?? '';
+    } else if(kycDataStatus![1].panData!.status =="APPROVE"){
+      return kycDataStatus![1].panData!.name ?? '';
+    } else {
+      return '';
+    }
+  }
+
+  String getKycStatusVar() {
+    if(kycDataStatus![1].panData!.status =="APPROVE") {
+      userId = kycDataStatus![1].panData!.userId.toString();
+      return kycDataStatus![1].panData!.status ??'';
+    } else if(kycDataStatus![0].aadharData!.status =="APPROVE") {
+      userId = kycDataStatus![0].aadharData!.userId.toString();
+      return kycDataStatus![0].aadharData!.status ?? '';
+    } else {
+      return 'PENDING';
+    }
+  }
+
+  void getKycStatus() async {
+    try {
+      final params = <String, dynamic>{
+      "userData": mobileNbr.text,
+    };
+      kycStatus = await ApiCallRepo.instance.getKycStatus(params);
+      if (kycStatus?['respCode'] == 100) {
+        kycDataStatus?.addAll(kycStatus?['respCode']);
+        userName = getUserName();
+        userKycStatus = getKycStatusVar();
+        Helper.customerId = userId;
+        Helper.customerName = userName;
+      } else {
+        Helper.toast(kycStatus?['message']);
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+    }
   }
 
 String totalAmountWithDiscount(String value,String discountPercentage) {
@@ -131,13 +185,28 @@ Widget getRowWidget({required String title,required String amount}) {
                     ),
                   ),
                 ),
-
-                SizedBox(
+                const SizedBox(width: 20,),
+                CasinoButton(
+                  title: 'Search',
+                  onTap: () {
+                    if(mobileNbr.text.isNotEmpty){
+                      getKycStatus();
+                    } else {
+                       Helper.toast('Please Enter Mobile number');
+                    }
+                  },
+                )
+              ],
+            ),
+            const SizedBox(height: 20,),
+            (userName != '') ? CasinoText(text: userName) : const SizedBox.shrink(),
+            (userKycStatus != '') ? CasinoText(text: userKycStatus) : const SizedBox.shrink(),
+            SizedBox(
                   width: 200,
                   height: 50,
                   child: TextFormField(
                   inputFormatters:[
-                    LengthLimitingTextInputFormatter(6),
+                    LengthLimitingTextInputFormatter(7),
                   ],
                   onChanged: (value) {
                     setState(() {
@@ -160,56 +229,54 @@ Widget getRowWidget({required String title,required String amount}) {
                     ),
                   ),
                 ),
+            const SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Row(
+                  children: [
+                    CasinoText(text: 'IsDiscount'),
+                    SizedBox(width: 20,),
+                    // if(isDiscount)SizedBox(
+                    //   width: 150,
+                    //   height: 40,
+                    //   child: TextFormField(
+                    //   controller:discountPercentage,
+                    //   inputFormatters:[
+                    //     LengthLimitingTextInputFormatter(3),
+                    //   ],
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       discountAmount = totalAmountWithDiscount(valueAmount,value);
+                    //     });
+                    //   },
+                    //   keyboardType: TextInputType.number,
+                    //     decoration: const InputDecoration(
+                    //       border: OutlineInputBorder(),
+                    //       focusColor: Colors.black,
+                    //     // icon: Icon(Icons.person),
+                    //       labelText: 'Discount %',
+                    //     ),
+                    //   ),
+                    // ),
+
+                  ],
+                ), 
+                CupertinoSwitch(
+                activeColor: CasinoColors.primary,
+                value: isDiscount,
+                onChanged: (value) {
+                  setState(() {
+                    isDiscount = value;
+                    // getDiscountAmount(valueAmount);
+                    // getFaceValue(valueAmount);
+                  });
+                },
+            ),
               ],
             ),
             const SizedBox(height: 20,),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     const Row(
-            //       children: [
-            //         CasinoText(text: 'IsDiscount'),
-            //         SizedBox(width: 20,),
-            //         // if(isDiscount)SizedBox(
-            //         //   width: 150,
-            //         //   height: 40,
-            //         //   child: TextFormField(
-            //         //   controller:discountPercentage,
-            //         //   inputFormatters:[
-            //         //     LengthLimitingTextInputFormatter(3),
-            //         //   ],
-            //         //   onChanged: (value) {
-            //         //     setState(() {
-            //         //       discountAmount = totalAmountWithDiscount(valueAmount,value);
-            //         //     });
-            //         //   },
-            //         //   keyboardType: TextInputType.number,
-            //         //     decoration: const InputDecoration(
-            //         //       border: OutlineInputBorder(),
-            //         //       focusColor: Colors.black,
-            //         //     // icon: Icon(Icons.person),
-            //         //       labelText: 'Discount %',
-            //         //     ),
-            //         //   ),
-            //         // ),
-
-            //       ],
-            //     ), 
-            //     CupertinoSwitch(
-            //     activeColor: CasinoColors.primary,
-            //     value: isDiscount,
-            //     onChanged: (value) {
-            //       setState(() {
-            //         isDiscount = value;
-            //         getDiscountAmount(valueAmount);
-            //         getFaceValue(valueAmount);
-            //       });
-            //     },
-            // ),
-            //   ],
-            // ),
-            // const SizedBox(height: 20,),
-            // getRowWidget(title: 'Chips Face Value',amount: faceValue),
+            getRowWidget(title: 'Chips Face Value',amount: faceValue),
             const SizedBox(height: 10,),
             getRowWidget(title: 'Less Discount',amount: getDiscount(valueAmount)),
             const SizedBox(height: 10,),
@@ -233,7 +300,7 @@ Widget getRowWidget({required String title,required String amount}) {
                 onTap:() {
                   if(valueAmount != '') {
                     if(mobileNbr.text != '') {
-                      widget.callBack(valueAmount,discountAmount,totalAmount);
+                      widget.callBack(userName,userId,(userKycStatus =='APPROVE'),valueAmount,discountAmount,totalAmount);
                     } else {
                       Helper.toast('Please Enter Mobile number');
                     }

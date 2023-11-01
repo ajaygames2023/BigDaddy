@@ -2,8 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../../../utils/constants/colors.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class DocumentUpload extends StatelessWidget {
   const DocumentUpload({
@@ -21,7 +20,7 @@ class DocumentUpload extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.5,
         child:  (image == null) ? const Center(
           child: Icon(Icons.camera_alt_outlined,color: Color.fromARGB(255, 238, 197, 92),size: 250,),
-        ) : Image.file(File(image?.path ?? ''),fit: BoxFit.contain,)),
+        ) : (image!.path.contains('pdf')) ? SfPdfViewer.file(File(image?.path ?? '',)) : Image.file(File(image?.path ?? ''),fit: BoxFit.contain,)),
     );
   }
 }

@@ -82,7 +82,7 @@ class UserLogin extends GetView<UserLoginController> {
                                               style: const TextStyle(color: CasinoColors.secondary,fontWeight: FontWeight.bold),
                                               decoration: const InputDecoration(
                                                 errorText: '',
-                                                errorStyle: TextStyle(fontSize: 0),
+                                                errorStyle: TextStyle(fontSize: 0.01),
                                                 border: InputBorder.none,
                                                 hintText: "Enter user id",
                                                 hintStyle: TextStyle(color: CasinoColors.secondary,fontWeight: FontWeight.bold),
@@ -124,7 +124,7 @@ class UserLogin extends GetView<UserLoginController> {
                                                   decoration: InputDecoration(
                                                     border: InputBorder.none,
                                                     errorText: '',
-                                                    errorStyle: const TextStyle(fontSize: 0),
+                                                    errorStyle: const TextStyle(fontSize: 0.01),
                                                     hintText: "Enter password",
                                                     hintStyle: const TextStyle(color: CasinoColors.secondary,fontWeight: FontWeight.bold),
                                                     suffixIcon: IconButton(

@@ -30,6 +30,8 @@ class Helper {
   static int ts = DateTime.now().millisecondsSinceEpoch * 1000;
   static String deviceType = deviceTypes();
   double currentTime = 0;
+  static String customerName = '';
+  static String bussinessDate = '01-01-2023';
 
   Map<String, dynamic> getParams() {
     return <String, dynamic>{

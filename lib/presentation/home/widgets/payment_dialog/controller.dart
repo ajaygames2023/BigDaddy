@@ -10,6 +10,7 @@ class PaymentDialogController extends GetxController{
   String paymentModeGroupValue = 'Digital';
   String paymentTypeGroupValue = 'UPI';
   TextEditingController txnNo = TextEditingController();
+  TextEditingController panNo = TextEditingController();
   
 
   toggleIsLoading(){

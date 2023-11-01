@@ -16,6 +16,7 @@ import 'package:get_upi/get_upi.dart';
 import '../../config/router/routes.dart';
 import '../../domain/models/invoice/invoice_data.dart';
 import '../../domain/models/invoice/invoice_generate.dart';
+import '../../domain/models/kycdata_status/index.dart';
 import '../../utils/helper/helper.dart';
 import 'widgets/chip_dialog.dart';
 import 'widgets/packages.dart';
@@ -28,6 +29,8 @@ class ItemsController extends GetxController {
   Map<String, dynamic>? logoutRes;
  // Map<String, dynamic>? generateInvoice;
   GenerateInvoiceModel? invoiceData;
+  Map<String,dynamic>? kycStatus;
+  List<KycDataStatus>? kycDataStatus;
   List<String> selectedList = [];
   TextEditingController chipAmount = TextEditingController();
   double totalAmount = 0;
@@ -136,7 +139,7 @@ class ItemsController extends GetxController {
       packageAmount: amount,
       onTap: () {
       Get.back();
-      openPaymentMode(amount: amount);
+      openPaymentMode(amount: amount, name: Helper.customerName, userId: Helper.customerId, isKyc: true);
     //  getPaymentMethod(id: id,amount: amount);
     },)
     ));
@@ -209,9 +212,20 @@ class ItemsController extends GetxController {
     } finally {}
   }
 
-  getGenerateInvoice({required int id,required String amount,required String discount, required String amountAfterDiscoun,}) async {
+  getGenerateInvoice({
+    String? txnNo,
+    String? paymentType,
+    required String paymentMode,
+    String? panNo,
+    required int id,required String amount,required String discount, required String amountAfterDiscoun,}) async {
     try {
       var param = {
+        "customerName" : Helper.customerName,
+        "customerId" : Helper.customerName,
+        "panNo" : panNo,
+        "paymentMode" : paymentMode,
+        "paymentType" : paymentType,
+        'txnNo' : txnNo,
          "amount": amount,
           "discount": discount,
           "amount_after_discount": amountAfterDiscoun,
@@ -257,20 +271,42 @@ class ItemsController extends GetxController {
       return WelcomePage(controller: controller);
     }
 
+    void getKycStatus() async {
+      try {
+        final params = <String, dynamic>{
+        "email": 'userId.text',
+      };
+        kycStatus = await ApiCallRepo.instance.getKycStatus(params);
+        if (kycStatus?['respCode'] == 100) {
+          kycDataStatus?.addAll(kycStatus?['respCode']);
+        } else {
+          Helper.toast(kycStatus?['message']);
+        }
+      } catch (e) {
+        rethrow;
+      } finally {
+        loadingData();
+      }
+    }
+
     void getChipsDialog() {
        Get.dialog( DialogBox(title: 'Chips', child: Chips(
         amount: chipAmount, 
-        totalAmount: '1', callBack: (amount,discount,amountAfterDiscount) {
+        totalAmount: '1', callBack: (name,useId,isKyc,amount,discount,amountAfterDiscount) {
           Get.back();
-          openPaymentMode(amount: amount,discount: discount,amountAfterDiscount: amountAfterDiscount);
+          openPaymentMode(name: name,userId: useId,isKyc: isKyc,amount: amount,discount: discount,amountAfterDiscount: amountAfterDiscount);
          },)));
     }
 
-    void openPaymentMode({required String amount,
+    void openPaymentMode({
+      required String name,
+      required String userId,
+      required bool isKyc,
+      required String amount,
       String? discount,
       String? amountAfterDiscount}) {
-      Get.dialog( DialogBox(title: 'Payment Mode', child: PaymentDialog(amount: amount,callBack: (paymentMode, paymentType, txnNo) {
-        getGenerateInvoice(id: 100, amount:amount, discount: discount ?? '0', amountAfterDiscoun:amountAfterDiscount ?? '0');
+      Get.dialog( DialogBox(title: 'Payment Mode', child: PaymentDialog(amount: amount,callBack: (paymentMode, paymentType, txnNo, panNo) {
+        getGenerateInvoice(id: 100, amount:amount, discount: discount ?? '0', amountAfterDiscoun:amountAfterDiscount ?? '0', paymentMode: paymentMode??'',panNo: panNo,paymentType: paymentType,txnNo: txnNo);
       },)));
     }
 
