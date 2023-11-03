@@ -38,7 +38,7 @@ class _CasinoState extends State<Casino> {
         translations: CasinoTranslations(),
         locale: const Locale('en', 'EN'),
         getPages: AppPages.pages,
-        initialRoute: Routes.splash,
+        initialRoute: Routes.verification,
       ),
     );
   }

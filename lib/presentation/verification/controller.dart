@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:casino/global_widgets/text.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,9 @@ class VerificationController extends GetxController {
   CardDetails? aadharDetails;
   String panStatus = '';
   String aadharStatus = '';
+
+  TextEditingController aadharNo = TextEditingController();
+  TextEditingController panNo = TextEditingController();
 
 
   void loadingData(){
@@ -184,13 +189,13 @@ class VerificationController extends GetxController {
       var param = <String, dynamic>{
         'userId' : Helper.userId,
         'token': Helper.token,
-        'name': 'pan',
-        'panNumber':'BWRPP4132U', 
+        'name': '',
+        'panNumber': panNo.text, 
         'state': 'Select State',
         'dob': '',
       };
-      if (panImage != null) {
-        panVerified = await ApiCallRepo.instance.panVerify(param, panImage!);
+      if (panNo.text != '') {
+        panVerified = await ApiCallRepo.instance.panVerify(param, panImage ?? XFile(''));
         if (panVerified?["respCode"] == 100 ||
             panVerified?["respCode"] == 101) {
               getAllData();
@@ -218,14 +223,14 @@ class VerificationController extends GetxController {
       var param = <String, dynamic>{
         'userId': Helper.userId,
         'token': Helper.token,
-        'name': 'aadharName.text',
-        'aadharNumber': '444489761234',
+        'name': '',
+        'aadharNumber': aadharNo.text,
         'state': 'Select State',
         'dob': '',
       };
-      if (aadharFrontImage != null && aadharBackImage != null) {
+      if (aadharNo.text != '') {
         aadharVerified = await ApiCallRepo.instance
-            .aadharVerify(param, aadharFrontImage!, aadharBackImage!);
+            .aadharVerify(param, aadharFrontImage ?? XFile(''), aadharBackImage?? XFile(''));
         if (aadharVerified?["respCode"] == 100) {
             getAllData();
             Helper.toast(aadharVerified?["message"],);
@@ -235,7 +240,7 @@ class VerificationController extends GetxController {
               );
         }
       } else {
-        loadingData();
+       // loadingData();
         Helper.toast('Please upload aadhar', );
       }
     } catch (e) {

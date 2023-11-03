@@ -1,6 +1,7 @@
 import 'package:casino/global_widgets/buttons.dart';
 import 'package:casino/global_widgets/text.dart';
 import 'package:casino/presentation/verification/controller.dart';
+import 'package:casino/presentation/verification/widgets/get_verify_details.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../global_widgets/radio.dart';
@@ -40,7 +41,16 @@ class Verification extends GetView<VerificationController> {
                                const SizedBox(height: 80,),
                               RadioButtons(groupValue: controller.groupValue, callBack: (String value) {controller.getDocumentType(value); },),
                               const SizedBox(height: 20,),
-                              controller.getImage(),
+                             // controller.getImage(),
+                              (controller.groupValue != 'PAN')?VerifyDocDetails(
+                                formField: controller.aadharNo, 
+                                hint: 'Enter aadhar number',
+                                label: 'Enter aadhar number',) :
+                                VerifyDocDetails(
+                                formField: controller.panNo, 
+                                label: 'Enter pan number',
+                                hint: 'Enter pan number',
+                                ),
                               // Documents(groupValue: controller.groupValue,
                               // panImage: controller.panImage,
                               // aadharBackImage: controller.aadharBackImage,

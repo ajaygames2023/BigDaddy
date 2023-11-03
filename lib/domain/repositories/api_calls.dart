@@ -50,8 +50,8 @@ class ApiCallRepo {
     try {
       var formData = FormData.fromMap({
         ...params,
-        'panCardImage':
-            await MultipartFile.fromFile(image.path, filename: image.name),
+        // 'panCardImage':
+        //     await MultipartFile.fromFile(image.path, filename: image.name),
       });
       print(formData);
       final apiRes =
@@ -69,10 +69,10 @@ class ApiCallRepo {
     try {
       var formData = FormData.fromMap({
         ...params,
-        'aadharCardFrontimage': await MultipartFile.fromFile(frontImage.path,
-            filename: frontImage.name),
-        'aadharCardBackimage': await MultipartFile.fromFile(backImage.path,
-            filename: backImage.name),
+        // 'aadharCardFrontimage': await MultipartFile.fromFile(frontImage.path,
+        //     filename: frontImage.name),
+        // 'aadharCardBackimage': await MultipartFile.fromFile(backImage.path,
+        //     filename: backImage.name),
       });
       print(params);
       final apiRes =

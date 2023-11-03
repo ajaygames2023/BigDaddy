@@ -26,7 +26,7 @@ class Items extends GetView<ItemsController> {
               actions: [
                 Padding(
                   padding: const EdgeInsets.only(right: 40),
-                  child: Center(child: CasinoText(text: 'Bussiness Date : ${Helper.bussinessDate}',color: Color.fromARGB(255, 250, 198, 65),fontWeight: FontWeight.bold,fontSize: 20,)),
+                  child: Center(child: CasinoText(text: 'Bussiness Date : ${Helper.bussinessDate}',color: const Color.fromARGB(255, 250, 198, 65),fontWeight: FontWeight.bold,fontSize: 20,)),
                 ),
               ],
                ),
