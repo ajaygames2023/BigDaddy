@@ -7,17 +7,20 @@ class TextEditFormFiled extends StatelessWidget {
     required this.controller,
     this.maxLength,
     this.hintText,
+    this.enabled,
     this.keyboardType,}) : super(key: key);
 
     final TextEditingController controller;
     final int? maxLength;
     final String? hintText;
     final TextInputType? keyboardType;
+    final bool? enabled;
 
   @override
   Widget build(BuildContext context) {
     return  TextFormField(
       controller: controller,
+      enabled: enabled ?? true,
       scrollPadding: EdgeInsets.zero,
       keyboardType: keyboardType ?? TextInputType.text,
       inputFormatters: [
@@ -42,6 +45,10 @@ class TextEditFormFiled extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: CasinoColors.primary,width: 2),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: CasinoColors.primary.withOpacity(0.5),width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
       ),

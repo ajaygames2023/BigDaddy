@@ -10,10 +10,12 @@ class VerifyDocDetails extends StatelessWidget {
     required this.formField,
     this.hint,
     required this.label,
+    this.enabled,
     super.key});
   final TextEditingController formField;
   final String? hint;
   final String label;
+  final bool? enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class VerifyDocDetails extends StatelessWidget {
             const SizedBox(height: 10,),
             TextEditFormFiled(
               controller: formField,
+              enabled: enabled,
               hintText: hint ??'Enter',),
             //   const SizedBox(height: 30,),
             //   CasinoText(text: label2,color: CasinoColors.white,),

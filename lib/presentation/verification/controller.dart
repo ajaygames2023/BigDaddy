@@ -1,12 +1,7 @@
-import 'dart:io';
-
-import 'package:casino/global_widgets/text.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../config/router/routes.dart';
 import '../../domain/models/card_details.dart';
 import '../../domain/repositories/api_calls.dart';
@@ -30,6 +25,8 @@ class VerificationController extends GetxController {
   CardDetails? aadharDetails;
   String panStatus = '';
   String aadharStatus = '';
+  bool isAadharVerified = false;
+  bool isPanVerified = false;
 
   TextEditingController aadharNo = TextEditingController();
   TextEditingController panNo = TextEditingController();
@@ -189,10 +186,10 @@ class VerificationController extends GetxController {
       var param = <String, dynamic>{
         'userId' : Helper.userId,
         'token': Helper.token,
-        'name': '',
+        'name': 'abc',
         'panNumber': panNo.text, 
         'state': 'Select State',
-        'dob': '',
+        'dob': '3-8-1997',
       };
       if (panNo.text != '') {
         panVerified = await ApiCallRepo.instance.panVerify(param, panImage ?? XFile(''));
@@ -223,10 +220,10 @@ class VerificationController extends GetxController {
       var param = <String, dynamic>{
         'userId': Helper.userId,
         'token': Helper.token,
-        'name': '',
+        'name': 'abc',
         'aadharNumber': aadharNo.text,
         'state': 'Select State',
-        'dob': '',
+        'dob': '3-8-1997',
       };
       if (aadharNo.text != '') {
         aadharVerified = await ApiCallRepo.instance
@@ -240,7 +237,6 @@ class VerificationController extends GetxController {
               );
         }
       } else {
-       // loadingData();
         Helper.toast('Please upload aadhar', );
       }
     } catch (e) {
@@ -268,8 +264,11 @@ class VerificationController extends GetxController {
     }
   }
 
-    void getPanDetails() {
+  void getPanDetails() {
     panStatus = panDetails?.status ?? '';
+    if(panStatus == 'APPROVE'){
+      isPanVerified = true;
+    }
     if(panStatus != '') {
       isNext = true;
     }
@@ -278,6 +277,9 @@ class VerificationController extends GetxController {
 
   void getAadharDetails() {
     aadharStatus = aadharDetails?.status ?? '';
+    if(aadharStatus == 'APPROVE'){
+      isAadharVerified = true;
+    }
     if(aadharStatus != '') {
       isNext = true;
     }

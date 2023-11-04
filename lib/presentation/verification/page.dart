@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../global_widgets/radio.dart';
 import '../../utils/constants/colors.dart';
+import 'widgets/documents.dart';
 
 class Verification extends GetView<VerificationController> {
   const Verification({super.key});
@@ -45,18 +46,20 @@ class Verification extends GetView<VerificationController> {
                               (controller.groupValue != 'PAN')?VerifyDocDetails(
                                 formField: controller.aadharNo, 
                                 hint: 'Enter aadhar number',
+                                enabled: !controller.isAadharVerified,
                                 label: 'Enter aadhar number',) :
                                 VerifyDocDetails(
                                 formField: controller.panNo, 
                                 label: 'Enter pan number',
+                                enabled: !controller.isPanVerified,
                                 hint: 'Enter pan number',
                                 ),
-                              // Documents(groupValue: controller.groupValue,
-                              // panImage: controller.panImage,
-                              // aadharBackImage: controller.aadharBackImage,
-                              // aadharFrontImage: controller.aadharFrontImage,
-                              // callBack: (typeImage) { controller.chooseWhichImage(typeImage);
-                              // controller.update();}),
+                              Documents(groupValue: controller.groupValue,
+                              panImage: controller.panImage,
+                              aadharBackImage: controller.aadharBackImage,
+                              aadharFrontImage: controller.aadharFrontImage,
+                              callBack: (typeImage) { controller.chooseWhichImage(typeImage);
+                              controller.update();}),
                               const SizedBox(height: 50,),
                                 
                             if(controller.panStatus == '' || controller.aadharStatus =='') CasinoButton(
