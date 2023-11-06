@@ -12,6 +12,8 @@ abstract class Urls {
   static const getInvoice = '$webserver/getInvoice';
   static const generateInvoice =  '$webserver/users/generateInvoice';
   static const kycStatus =  '$webserver/users/getKycStatus';
+  static const profileUpdate = '$webserver/users/update';
+  static const myProfile = '$webserver/users/getbyid';
   static const pdf = 'https://bigdaddy-casino.s3.ap-south-1.amazonaws.com/invoices/invoice_2.pdf';
   static const pdfLink = 'https://drive.google.com/uc?export=download&id=18SNJJWUJsRxg2Qa1RMZn5M54xygKC9KP';
 }

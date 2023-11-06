@@ -54,13 +54,13 @@ class Verification extends GetView<VerificationController> {
                                 enabled: !controller.isPanVerified,
                                 hint: 'Enter pan number',
                                 ),
-                              Documents(groupValue: controller.groupValue,
-                              panImage: controller.panImage,
-                              aadharBackImage: controller.aadharBackImage,
-                              aadharFrontImage: controller.aadharFrontImage,
-                              callBack: (typeImage) { controller.chooseWhichImage(typeImage);
-                              controller.update();}),
-                              const SizedBox(height: 50,),
+                              // Documents(groupValue: controller.groupValue,
+                              // panImage: controller.panImage,
+                              // aadharBackImage: controller.aadharBackImage,
+                              // aadharFrontImage: controller.aadharFrontImage,
+                              // callBack: (typeImage) { controller.chooseWhichImage(typeImage);
+                              // controller.update();}),
+                              // const SizedBox(height: 50,),
                                 
                             if(controller.panStatus == '' || controller.aadharStatus =='') CasinoButton(
                                   radius: 30,

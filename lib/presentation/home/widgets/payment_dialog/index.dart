@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 
+import '../../../../utils/helper/helper.dart';
 import 'controller.dart';
 
 class PaymentDialog extends GetView<PaymentDialogController> {
@@ -113,7 +114,11 @@ class PaymentDialog extends GetView<PaymentDialogController> {
                 ) : const SizedBox.shrink():const SizedBox.shrink(),
                  const SizedBox(height: 40,),
                  Center(child: CasinoButton(title: 'Generate Invoice',height: 50,width: 300,fontSize: 20,fontWeight: FontWeight.bold,
-                 onTap: () => callBack(controller.paymentModeGroupValue,controller.paymentTypeGroupValue,controller.txnNo.text,controller.panNo.text),
+                 onTap: () {
+                  controller.onTapGenerateInvoice(groupValue: controller.paymentModeGroupValue, callBack: (String? paymentMode, String? paymentType, String? txnNo, String? panNo) { 
+                    callBack(controller.paymentModeGroupValue,controller.paymentTypeGroupValue,controller.txnNo.text,controller.panNo.text);
+                   }, amount: amount ?? '',);
+                  },
                  ))
               
               ],

@@ -18,6 +18,7 @@ import '../../domain/models/invoice/invoice_data.dart';
 import '../../domain/models/invoice/invoice_generate.dart';
 import '../../domain/models/kycdata_status/index.dart';
 import '../../utils/helper/helper.dart';
+import '../chips/controller.dart';
 import 'widgets/chip_dialog.dart';
 import 'widgets/packages.dart';
 import 'widgets/welcome_page.dart';
@@ -236,7 +237,12 @@ class ItemsController extends GetxController {
       };
       invoiceData = await ApiCallRepo.instance.generateInvoice(param);
       if (invoiceData!= null) {
-        Get.toNamed(Routes.invoice,arguments: {'link':invoiceData!.invoiceUrl});
+        Get.back();
+        final result = Get.toNamed(Routes.invoice,arguments: {'link':invoiceData!.invoiceUrl});
+        if(result != null) {
+          ChipController controller = Get.put(ChipController());
+          controller.clearData();
+        }
       } else {
         Helper.toast('Something when wrong.');
       }
@@ -290,12 +296,13 @@ class ItemsController extends GetxController {
     }
 
     void getChipsDialog() {
-       Get.dialog( DialogBox(title: 'Chips', child: Chips(
-        amount: chipAmount, 
-        totalAmount: '1', callBack: (name,useId,isKyc,amount,discount,amountAfterDiscount) {
-          Get.back();
-          openPaymentMode(name: name,userId: useId,isKyc: isKyc,amount: amount,discount: discount,amountAfterDiscount: amountAfterDiscount);
-         },)));
+      Get.toNamed(Routes.chip);
+      //  Get.dialog( DialogBox(title: 'Chips', child: Chips(
+      //   amount: chipAmount, 
+      //   totalAmount: '1', callBack: (name,useId,isKyc,amount,discount,amountAfterDiscount) {
+      //     Get.back();
+      //     openPaymentMode(name: name,userId: useId,isKyc: isKyc,amount: amount,discount: discount,amountAfterDiscount: amountAfterDiscount);
+      //    },)));
     }
 
     void openPaymentMode({
@@ -305,7 +312,7 @@ class ItemsController extends GetxController {
       required String amount,
       String? discount,
       String? amountAfterDiscount}) {
-      Get.dialog( DialogBox(title: 'Payment Mode', child: PaymentDialog(amount: amount,callBack: (paymentMode, paymentType, txnNo, panNo) {
+      Get.dialog( DialogBox(title: 'Payment Mode', child: PaymentDialog(amount: amount,isKyc: isKyc,callBack: (paymentMode, paymentType, txnNo, panNo) {
         getGenerateInvoice(id: 100, amount:amount, discount: discount ?? '0', amountAfterDiscoun:amountAfterDiscount ?? '0', paymentMode: paymentMode??'',panNo: panNo,paymentType: paymentType,txnNo: txnNo);
       },)));
     }

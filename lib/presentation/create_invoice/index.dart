@@ -30,7 +30,7 @@ class Invoice extends GetView<InvoiceController> {
     return Scaffold(
             appBar: AppBar(
         leading: IconButton(onPressed: (){
-          Get.back();
+          Get.back(result: true);
         }, icon: const Icon(Icons.arrow_back_ios,color: Color.fromARGB(255, 250, 198, 65),)),
         backgroundColor:  CasinoColors.secondary,
         title: const CasinoText(text: 'Invoice',color: Color.fromARGB(255, 250, 198, 65),fontWeight: FontWeight.w600,),

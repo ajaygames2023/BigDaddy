@@ -8,4 +8,5 @@ abstract class Routes {
   static const items = '/items';
   static const invoice = '/invoice';
   static const payment = '/payment';
+  static const chip = '/chip';
 }

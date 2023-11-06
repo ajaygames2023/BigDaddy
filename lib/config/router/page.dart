@@ -1,4 +1,5 @@
 import 'package:casino/global_widgets/pg.dart';
+import 'package:casino/presentation/chips/binding.dart';
 import 'package:casino/presentation/create_invoice/index.dart';
 import 'package:casino/presentation/home/binding.dart';
 import 'package:casino/presentation/home/page.dart';
@@ -8,7 +9,9 @@ import 'package:casino/presentation/splash/page.dart';
 import 'package:casino/presentation/user_login/page.dart';
 import 'package:casino/presentation/verification/binding.dart';
 import 'package:casino/presentation/verification/page.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../presentation/chips/index.dart';
 import '../../presentation/create_invoice/binding.dart';
 import '../../presentation/login/page.dart';
 import '../../presentation/payment/binding.dart';
@@ -51,6 +54,11 @@ abstract class AppPages {
       name: Routes.payment,
       page: () => const Payment(),
       binding: PaymentBinding(),
+    ),
+    GetPage(
+      name: Routes.chip,
+      page: () => const Chips(),
+      binding: ChipBinding(),
     ),
     ];
 }

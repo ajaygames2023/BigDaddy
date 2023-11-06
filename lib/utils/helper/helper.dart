@@ -44,7 +44,7 @@ class Helper {
     };
   }
 
-  static void toast(String title, {Duration? duration}) {
+  static void toast(String title, {Duration? duration,String? status}) {
     // Fluttertoast.showToast(
     //     msg: title,
     //     toastLength: toastLength ?? Toast.LENGTH_SHORT,
@@ -53,7 +53,7 @@ class Helper {
     //     backgroundColor: const Color.fromARGB(255, 250, 198, 65),
     //     textColor: CasinoColors.black,
     //     fontSize: 16.0);
-      Get.snackbar('Error', title,backgroundColor: CasinoColors.secondary,colorText: CasinoColors.primary,duration: duration ?? const Duration(seconds: 1));
+      Get.snackbar(status ?? 'Error', title,backgroundColor: CasinoColors.secondary,colorText: CasinoColors.primary,duration: duration ?? const Duration(seconds: 1));
   }
 
   static void openBottomSheet({required Widget Function(CasinoBottomSheetController) child}) {

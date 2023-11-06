@@ -9,6 +9,7 @@ import '../domain/api_constants.dart';
 import '../models/card_details.dart';
 import '../models/invoice/invoice_generate.dart';
 import '../models/messages.dart';
+import '../models/profile.dart';
 
 class ApiCallRepo {
   ApiCallRepo._();
@@ -140,6 +141,32 @@ class ApiCallRepo {
     try {
       final apiRes = await ApiCalls.instance.post(url: Urls.kycStatus, body: params);
       return Map.castFrom(json.decode(apiRes.response.toString()));
+    } catch (e) {
+      println(PrintTag.e, e.toString());
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> updateProfile(
+      Map<String, dynamic> params) async {
+    try {
+      final apiRes =
+          await ApiCalls.instance.post(url: Urls.profileUpdate, body: params);
+      return Map.castFrom(json.decode(apiRes.response.toString()));
+    } catch (e) {
+      println(PrintTag.e, e.toString());
+      rethrow;
+    }
+  }
+
+  Future<MyProfile> myProfile(Map<String, dynamic> params) async {
+    try {
+      final apiRes =
+          await ApiCalls.instance.post(url: Urls.myProfile, body: params);
+      final jsonData =
+          Map.castFrom(jsonDecode(apiRes.response?.toString() ?? ""));
+      var data = MyProfile.fromJson(jsonData['respData']);
+      return data;
     } catch (e) {
       println(PrintTag.e, e.toString());
       rethrow;
