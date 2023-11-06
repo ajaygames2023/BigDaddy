@@ -23,6 +23,7 @@ class ChipController extends GetxController {
   TextEditingController otp= TextEditingController();
   TextEditingController name= TextEditingController();
   TextEditingController amount= TextEditingController();
+  TextEditingController discountValue= TextEditingController();
   Map<String,dynamic>? kycStatus;
   List<KycDataStatus>? kycDataStatus;
   String userName = '';
@@ -40,6 +41,9 @@ class ChipController extends GetxController {
   UserDetails? userDetails;
   bool isResendOTP = false;
   bool isDisableUserBtn = false;
+  List<String> discountListType = ['Dealer','Management','Employment'];
+  String discountType = 'Dealer';
+  String discountGroupValue = 'Percentage';
 
     @override
   void onInit() async {
@@ -216,7 +220,7 @@ Widget getRowWidget({required String title,required String amount}) {
       SizedBox(
         child: Align(
           alignment: Alignment.centerRight,
-          child: CasinoText(text: '$title : ')),
+          child: CasinoText(text: '$title : ',fontWeight: FontWeight.bold,)),
       ),
       const SizedBox(width: 20,),
       SizedBox(
@@ -224,6 +228,11 @@ Widget getRowWidget({required String title,required String amount}) {
     ],
   );
 }
+
+  selectDiscountModeType(String val){
+    discountGroupValue = val;
+    update();
+  }
 
   // signInOtp(): used to send otp
   void signInOtp() async {
