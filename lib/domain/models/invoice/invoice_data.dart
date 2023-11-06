@@ -1,7 +1,7 @@
 class InvoiceData {
-  num? id;
-  num? custId;
-  num? userId;
+  String? id;
+  String? custId;
+  String? userId;
   num? itemId;
   String? itemDescription;
   String? price;
@@ -37,9 +37,9 @@ class InvoiceData {
       this.createdAt});
 
   InvoiceData.fromJson(Map<String, dynamic> json) {
-    id = json['Id'];
-    custId = json['Cust_id'];
-    userId = json['User_id'];
+    id = json['Id'].toString();
+    custId = json['Cust_id'].toString();
+    userId = json['User_id'].toString();
     itemId = json['Item_id'];
     itemDescription = json['Item_description'];
     price = json['Price'].toString();

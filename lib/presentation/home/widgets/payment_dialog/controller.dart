@@ -30,8 +30,6 @@ class PaymentDialogController extends GetxController{
   }
 
   void onTapGenerateInvoice({required String groupValue,required Function(String? paymentMode,String? paymentType,String? txnNo,String? panNo) callBack,required String amount}) {
-    print(groupValue);
-    print(amount);
     if(groupValue == 'Digital') {
       if(txnNo.text.isNotEmpty) {
         callBack(paymentModeGroupValue,paymentTypeGroupValue,txnNo.text,panNo.text);

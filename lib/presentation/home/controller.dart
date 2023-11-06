@@ -221,8 +221,9 @@ class ItemsController extends GetxController {
     required int id,required String amount,required String discount, required String amountAfterDiscoun,}) async {
     try {
       var param = {
-        "customerName" : Helper.customerName,
-        "customerId" : Helper.customerName,
+        "customer_id":Helper.customerId,
+        "customer_name":Helper.customerName,
+        "customer_mobno":Helper.customerMobileNbr,
         "panNo" : panNo,
         "paymentMode" : paymentMode,
         "paymentType" : paymentType,
@@ -231,8 +232,9 @@ class ItemsController extends GetxController {
           "discount": discount,
           "amount_after_discount": amountAfterDiscoun,
           "item_id": id,
-          "item_description": "test",
+          "item_description": "Face Value of Chips",
           "Remarks": "test",
+          "Userid":Helper.userId,
           ...Helper.instance.getParams()
       };
       invoiceData = await ApiCallRepo.instance.generateInvoice(param);
@@ -313,7 +315,7 @@ class ItemsController extends GetxController {
       String? discount,
       String? amountAfterDiscount}) {
       Get.dialog( DialogBox(title: 'Payment Mode', child: PaymentDialog(amount: amount,isKyc: isKyc,callBack: (paymentMode, paymentType, txnNo, panNo) {
-        getGenerateInvoice(id: 100, amount:amount, discount: discount ?? '0', amountAfterDiscoun:amountAfterDiscount ?? '0', paymentMode: paymentMode??'',panNo: panNo,paymentType: paymentType,txnNo: txnNo);
+        getGenerateInvoice(id: 1, amount:amount, discount: discount ?? '0', amountAfterDiscoun:amountAfterDiscount ?? '0', paymentMode: paymentMode??'',panNo: panNo,paymentType: paymentType,txnNo: txnNo);
       },)));
     }
 

@@ -45,6 +45,8 @@ class ChipController extends GetxController {
   String discountType = 'Dealer';
   String discountGroupValue = 'Percentage';
 
+  String lessDiscount = '0';
+
     @override
   void onInit() async {
     super.onInit();
@@ -190,23 +192,37 @@ String getFaceValue(String value){
     return '0';
   }
   if(value != '0'){
-  if(!isDiscount) {
-    faceValue = (num.parse(value)-(2 * num.parse(getGST(value)))).toStringAsFixed(2);
+    faceValue = ((num.parse(value)-(2 * num.parse(getGST(value))))).toStringAsFixed(2);
     return faceValue;
-  } else {
-      faceValue = (num.parse(value)).toStringAsFixed(2);
-      return faceValue;
-  }}
+  // if(isDiscount) {
+    
+  // } else {
+  //     faceValue = (num.parse(value)).toStringAsFixed(2);
+  //     return faceValue;
+  // }
+  }
   return value;
 }
 
 
 String getGST(String amount) {
-  return ((num.parse(amount) - num.parse(getDiscount(amount))) * 0.14).toStringAsFixed(2);
+  return ((num.parse(amount) - num.parse(lessDiscount)) * 0.14).toStringAsFixed(2);
 }
 
 String getDiscount(String amount) {
   return (num.parse(amount) * 0.21875).toStringAsFixed(2);
+}
+
+String getDiscount1(String amount,{required String discountValue, required String discountType,required bool isDiscount}) {
+  if(isDiscount) {
+    if(discountType == 'Fixed') {
+      return (num.parse(discountValue)).toStringAsFixed(2);
+    } else {
+      return ((num.parse(amount) * num.parse(discountValue)) / 100).toStringAsFixed(2);
+    }
+  } else {
+    return '0';
+  }
 }
 
 String getAmountBeforeDiscount(String amount) {
@@ -231,6 +247,11 @@ Widget getRowWidget({required String title,required String amount}) {
 
   selectDiscountModeType(String val){
     discountGroupValue = val;
+    discountValue.text = '0';
+      if(discountValue.text.isNotEmpty) {
+    lessDiscount = getDiscount1(valueAmount, discountValue: discountValue.text, discountType: discountGroupValue,isDiscount: isDiscount);
+    }
+    getFaceValue(valueAmount);
     update();
   }
 
@@ -257,6 +278,11 @@ Widget getRowWidget({required String title,required String amount}) {
   void getProfile() async {
     try {
       myProfile = await ApiCallRepo.instance.myProfile(Helper.instance.getParams());
+      if(myProfile != null) {
+        Helper.customerName = myProfile!.screenName ?? '';
+        Helper.customerId = myProfile!.userId.toString();
+        Helper.customerMobileNbr = myProfile!.mobileNbr.toString();
+      }
       isDisableUserBtn = true;
         update();
 
