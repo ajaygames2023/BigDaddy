@@ -228,14 +228,14 @@ class ItemsController extends GetxController {
         "paymentMode" : paymentMode,
         "paymentType" : paymentType,
         'txnNo' : txnNo,
-         "amount": amount,
-          "discount": discount,
-          "amount_after_discount": amountAfterDiscoun,
-          "item_id": id,
-          "item_description": "Face Value of Chips",
-          "Remarks": "test",
-          "Userid":Helper.userId,
-          ...Helper.instance.getParams()
+        "amount": amount,
+        "discount": discount,
+        "amount_after_discount": amountAfterDiscoun,
+        "item_id": id,
+        "item_description": "Face Value of Chips",
+        "Remarks": "test",
+        "Userid":Helper.userId,
+        ...Helper.instance.getParams()
       };
       invoiceData = await ApiCallRepo.instance.generateInvoice(param);
       if (invoiceData!= null) {

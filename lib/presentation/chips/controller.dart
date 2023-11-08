@@ -109,14 +109,23 @@ class ChipController extends GetxController {
           isResendOTP = true;
           update();
         } else {
-          // Helper.customerId = userId;
-          // Helper.customerName = userName;
-           btnTitle = 'Verify';
-          isOTPField = true;
-          otpStatus = 'OTP send successfully';
-          signInOtp();
-          isResendOTP = true;
+          if(kycDataStatus!.first.aadharData!.status == 'APPROVE') {
+            Helper.customerId = kycDataStatus!.first.aadharData!.userId.toString();
+            Helper.customerName = kycDataStatus!.first.aadharData!.name.toString();
+            Helper.customerMobileNbr = '';
+
+          } else {
+            Helper.customerId = kycDataStatus!.first.panData!.userId.toString();
+            Helper.customerName = kycDataStatus!.first.panData!.name.toString();
+            Helper.customerMobileNbr = '';
+          }
           update();
+          //  btnTitle = 'Verify';
+          // isOTPField = true;
+          // otpStatus = 'OTP send successfully';
+          // signInOtp();
+          // isResendOTP = true;
+          // update();
 
         }
        // getProfile();
@@ -231,7 +240,7 @@ String getFaceValue(String value){
 
 
 String getGST(String amount) {
-  return ((num.parse(amount) - num.parse(lessDiscount)) * 0.14).toStringAsFixed(2);
+  return ((num.parse(amount) - num.parse(getDiscount(amount))) * 0.14).toStringAsFixed(2);
 }
 
 String getDiscount(String amount) {
@@ -322,7 +331,6 @@ Widget getRowWidget({required String title,required String amount}) {
   }
 
   void generateChipInvoice() {
-    
      ItemsController controller = Get.put(ItemsController());
    controller.openPaymentMode(name: 'abc',userId: '1',isKyc: true,amount: valueAmount.toString(),discount: getDiscount(valueAmount),amountAfterDiscount: valueAmount.toString());
   }

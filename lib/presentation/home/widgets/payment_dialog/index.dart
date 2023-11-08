@@ -20,13 +20,13 @@ class PaymentDialog extends GetView<PaymentDialogController> {
   final bool? isKyc;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context1) {
     return GetBuilder<PaymentDialogController>(
       init: PaymentDialogController(),
       builder: (context) {
         return SizedBox(
-          height: 300,
-          width: 600,
+          height: MediaQuery.of(context1).size.height * 0.4,
+          width: MediaQuery.of(context1).size.height * 0.7,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +41,7 @@ class PaymentDialog extends GetView<PaymentDialogController> {
                       direction: Axis.horizontal,
                       groupValue: controller.paymentModeGroupValue,
                       onChanged: (value) { controller.selectPaymentMode(value ?? 'Digital');},
-                      items: const ['Cash','Digital'],
+                      items: const ['Cash','Digital','Both'],
                       itemBuilder: (item) => RadioButtonBuilder(
                         item,
                       ),
@@ -49,7 +49,57 @@ class PaymentDialog extends GetView<PaymentDialogController> {
                   ),
                 ),
                 const SizedBox(height: 30,),
-                if(controller.paymentModeGroupValue == 'Digital') Transform.scale(
+                if(controller.paymentModeGroupValue == 'Both')Column(
+                  children: [
+                    Row(
+                      children: [
+                        const CasinoText(text: 'Cash Amount'),
+                        const SizedBox(width: 20,),
+                        SizedBox(
+                          width: 250,
+                          height: 50,
+                          child: TextFormField(
+                            controller: controller.cashAmount,
+                            inputFormatters:[
+                              LengthLimitingTextInputFormatter(20),
+                            ],
+                            keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                focusColor: Colors.black,
+                                labelText: 'Enter Cash Amount',
+                              ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20,),
+                    Row(
+                      children: [
+                        const CasinoText(text: 'Digital Amount'),
+                        const SizedBox(width: 20,),
+                        SizedBox(
+                          width: 250,
+                          height: 50,
+                          child: TextFormField(
+                            controller: controller.digitalAmount,
+                            inputFormatters:[
+                              LengthLimitingTextInputFormatter(20),
+                            ],
+                            keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                focusColor: Colors.black,
+                                labelText: 'Enter Digital Amount',
+                              ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 20,),
+                if(controller.paymentModeGroupValue == 'Digital' || controller.paymentModeGroupValue == 'Both') Transform.scale(
                   scale: 1,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 30),
@@ -66,10 +116,10 @@ class PaymentDialog extends GetView<PaymentDialogController> {
                     ),
                   ),
                 ),
-                if(controller.paymentModeGroupValue == 'Digital') const SizedBox(height: 20,),
+                if(controller.paymentModeGroupValue == 'Digital' || controller.paymentModeGroupValue == 'Both') const SizedBox(height: 20,),
                 CasinoText(text: 'Total Amount : Rs $amount'),
                  const SizedBox(height: 20,),
-                (controller.paymentModeGroupValue == 'Digital') ? Row(
+                (controller.paymentModeGroupValue == 'Digital'|| controller.paymentModeGroupValue == 'Both') ? Row(
                   children: [
                     const CasinoText(text: 'Transaction Id :'),
                     const SizedBox(width: 20,),

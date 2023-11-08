@@ -83,12 +83,11 @@ class VerificationController extends GetxController {
   }
 
   void chooseImage(String imageType) {
-    Get.dialog(CameraWindows());
-    // Get.dialog( Camera(callBack: (image) async { 
-    // //   var a = await image;
-    // // print('aaa'+ await image.toString());
-    //   chooseWhichImage(imageType,image : image ?? File(''));},
-    //   ),);
+    Get.dialog( Camera(callBack: (image) async { 
+    //   var a = await image;
+    // print('aaa'+ await image.toString());
+      chooseWhichImage(imageType,image : image ?? File(''));},
+      ),);
   }
 
     // image picker

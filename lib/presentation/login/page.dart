@@ -156,6 +156,10 @@ class Login extends GetView<LoginController> {
                             height: 125.0,
                             width: 125.0,
                           ),),
+                Positioned(
+                  top: 20,
+                  right: 20,
+                  child: CasinoButton(title: 'Skip',onTap: () => Get.toNamed(Routes.verification),)),
               ],
             ),
           )      );
