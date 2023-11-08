@@ -53,13 +53,16 @@ class ChipController extends GetxController {
   }
 
     String getUserName() {
-    if(kycDataStatus![0].aadharData!.status =="APPROVE") {
-      return kycDataStatus![0].aadharData!.name ?? '';
-    } else if(kycDataStatus![1].panData!.status =="APPROVE"){
-      return kycDataStatus![1].panData!.name ?? '';
-    } else {
+      if(kycDataStatus != null) {
+         if(kycDataStatus![0].aadharData!.status =="APPROVE") {
+            return kycDataStatus![0].aadharData!.name ?? '';
+          } else if(kycDataStatus![1].panData!.status =="APPROVE"){
+            return kycDataStatus![1].panData!.name ?? '';
+          } else {
+            return '';
+          }
+      }
       return '';
-    }
   }
 
   Color getOtpStatusColor() {
@@ -73,12 +76,16 @@ class ChipController extends GetxController {
   }
 
   String getKycStatusVar() {
-    if(kycDataStatus![1].panData!.status =="APPROVE") {
-      userId = kycDataStatus![1].panData!.userId.toString();
-      return kycDataStatus![1].panData!.status ??'';
-    } else if(kycDataStatus![0].aadharData!.status =="APPROVE") {
-      userId = kycDataStatus![0].aadharData!.userId.toString();
-      return kycDataStatus![0].aadharData!.status ?? '';
+    if(kycDataStatus != null) {
+      if(kycDataStatus![1].panData!.status =="APPROVE") {
+        userId = kycDataStatus![1].panData!.userId.toString();
+        return kycDataStatus![1].panData!.status ??'';
+      } else if(kycDataStatus![0].aadharData!.status =="APPROVE") {
+        userId = kycDataStatus![0].aadharData!.userId.toString();
+        return kycDataStatus![0].aadharData!.status ?? '';
+      } else {
+        return 'PENDING';
+      }
     } else {
       return 'PENDING';
     }
@@ -94,8 +101,26 @@ class ChipController extends GetxController {
         kycDataStatus?.addAll(kycStatus?['respCode']);
         userName = getUserName();
         userKycStatus = getKycStatusVar();
-        Helper.customerId = userId;
-        Helper.customerName = userName;
+        if(userKycStatus != 'APPROVE') {
+          btnTitle = 'Verify';
+          isOTPField = true;
+          otpStatus = 'OTP send successfully';
+          signInOtp();
+          isResendOTP = true;
+          update();
+        } else {
+          // Helper.customerId = userId;
+          // Helper.customerName = userName;
+           btnTitle = 'Verify';
+          isOTPField = true;
+          otpStatus = 'OTP send successfully';
+          signInOtp();
+          isResendOTP = true;
+          update();
+
+        }
+       // getProfile();
+        update();
       } else if(kycStatus?['respCode'] == 200) {
         btnTitle = 'Verify';
         isOTPField = true;

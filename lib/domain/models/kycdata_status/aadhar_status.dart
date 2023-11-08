@@ -2,7 +2,7 @@ class AadharData {
   int? userId;
   String? name;
   String? state;
-  int? aadharNumber;
+  String? aadharNumber;
   String? aadharCardFrontimage;
   String? aadharCardBackimage;
   String? status;
@@ -30,7 +30,7 @@ class AadharData {
     userId = json['userId'];
     name = json['name'];
     state = json['state'];
-    aadharNumber = json['aadharNumber'];
+    aadharNumber = json['aadharNumber'].toString();
     aadharCardFrontimage = json['aadharCardFrontimage'];
     aadharCardBackimage = json['aadharCardBackimage'];
     status = json['status'];

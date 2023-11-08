@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -47,16 +48,17 @@ class ApiCallRepo {
 
     Future<Map<String, dynamic>> 
     panVerify(
-      Map<String, dynamic> params, XFile image) async {
+      Map<String, dynamic> params, File image) async {
     try {
+      print(image.path);
+      print(image.path.split('/').last);
       var formData = FormData.fromMap({
         ...params,
-        // 'panCardImage':
-        //     await MultipartFile.fromFile(image.path, filename: image.name),
+        'panCardImage': await MultipartFile.fromFile(image.path, filename: image.path.split('/').last),
       });
+      print(params);
       print(formData);
-      final apiRes =
-          await ApiCalls.instance.post(url: Urls.pancardUpload, body: formData);
+      final apiRes = await ApiCalls.instance.post(url: Urls.pancardUpload, body: formData);
       return Map.castFrom(json.decode(apiRes.response.toString()));
     } catch (e) {
       println(PrintTag.e, e.toString());
@@ -66,14 +68,14 @@ class ApiCallRepo {
 
    Future<Map<String, dynamic>> 
     aadharVerify(
-      Map<String, dynamic> params, XFile frontImage, XFile backImage) async {
+      Map<String, dynamic> params, File frontImage, File backImage) async {
     try {
       var formData = FormData.fromMap({
         ...params,
-        // 'aadharCardFrontimage': await MultipartFile.fromFile(frontImage.path,
-        //     filename: frontImage.name),
-        // 'aadharCardBackimage': await MultipartFile.fromFile(backImage.path,
-        //     filename: backImage.name),
+        'aadharCardFrontimage': await MultipartFile.fromFile(frontImage.path,
+            filename: frontImage.path.split('/').last),
+        'aadharCardBackimage': await MultipartFile.fromFile(backImage.path,
+            filename: backImage.path.split('/').last),
       });
       print(params);
       final apiRes =

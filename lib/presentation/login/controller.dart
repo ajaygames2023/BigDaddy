@@ -68,6 +68,7 @@ class LoginController extends GetxController {
           Get.toNamed(Routes.verification);
         Helper.token = userDetails?.token ?? '';
         Helper.customerId = userDetails?.userId.toString() ?? '';
+        Helper.customerName = userDetails?.screenName.toString() ?? '';
         Helper.customerMobileNbr = phoneController.text;
         Future.delayed(const Duration(milliseconds: 100), () {
           pinEditingController.clear();

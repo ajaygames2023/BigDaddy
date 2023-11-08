@@ -2,7 +2,7 @@ class PanData {
   int? userId;
   String? name;
   String? state;
-  int? panNumber;
+  String? panNumber;
   String? panCardFrontimage;
   String? panCardBackimage;
   String? status;
@@ -30,7 +30,7 @@ class PanData {
     userId = json['userId'];
     name = json['name'];
     state = json['state'];
-    panNumber = json['panNumber'];
+    panNumber = json['panNumber'].toString();
     panCardFrontimage = json['panCardFrontimage'];
     panCardBackimage = json['panCardBackimage'];
     status = json['status'];

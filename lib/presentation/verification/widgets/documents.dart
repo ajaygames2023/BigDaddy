@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:casino/global_widgets/text.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
@@ -17,9 +19,9 @@ class Documents extends StatelessWidget {
     this.callBack,
     super.key});
   final String groupValue;
-  final XFile? panImage;
-  final XFile? aadharFrontImage;
-  final XFile? aadharBackImage;
+  final File? panImage;
+  final File? aadharFrontImage;
+  final File? aadharBackImage;
   final String? panStatus;
   final String? aadharStatus;
   final Function(String typeImage)? callBack;

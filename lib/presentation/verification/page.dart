@@ -4,6 +4,7 @@ import 'package:casino/presentation/verification/controller.dart';
 import 'package:casino/presentation/verification/widgets/get_verify_details.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../global_widgets/camera_macos.dart';
 import '../../global_widgets/radio.dart';
 import '../../utils/constants/colors.dart';
 import 'widgets/documents.dart';
@@ -42,25 +43,25 @@ class Verification extends GetView<VerificationController> {
                                const SizedBox(height: 80,),
                               RadioButtons(groupValue: controller.groupValue, callBack: (String value) {controller.getDocumentType(value); },),
                               const SizedBox(height: 20,),
-                             // controller.getImage(),
-                              (controller.groupValue != 'PAN')?VerifyDocDetails(
-                                formField: controller.aadharNo, 
-                                hint: 'Enter aadhar number',
-                                enabled: !controller.isAadharVerified,
-                                label: 'Enter aadhar number',) :
-                                VerifyDocDetails(
-                                formField: controller.panNo, 
-                                label: 'Enter pan number',
-                                enabled: !controller.isPanVerified,
-                                hint: 'Enter pan number',
-                                ),
-                              // Documents(groupValue: controller.groupValue,
-                              // panImage: controller.panImage,
-                              // aadharBackImage: controller.aadharBackImage,
-                              // aadharFrontImage: controller.aadharFrontImage,
-                              // callBack: (typeImage) { controller.chooseWhichImage(typeImage);
-                              // controller.update();}),
-                              // const SizedBox(height: 50,),
+                              (controller.aadharStatus == 'APPROVE' || controller.aadharStatus == 'APPROVE') ? controller.getImage():
+                              Documents(groupValue: controller.groupValue,
+                                panImage: controller.panImage,
+                                aadharBackImage: controller.aadharBackImage,
+                                aadharFrontImage: controller.aadharFrontImage,
+                                callBack: (typeImage) { controller.chooseImage(typeImage);
+                                controller.update();}),
+                              const SizedBox(height: 50,),
+                              // (controller.groupValue != 'PAN')?VerifyDocDetails(
+                              //   formField: controller.aadharNo, 
+                              //   hint: 'Enter aadhar number',
+                              //   enabled: !controller.isAadharVerified,
+                              //   label: 'Enter aadhar number',) :
+                              //   VerifyDocDetails(
+                              //   formField: controller.panNo, 
+                              //   label: 'Enter pan number',
+                              //   enabled: !controller.isPanVerified,
+                              //   hint: 'Enter pan number',
+                              //   ),
                                 
                             if(controller.panStatus == '' || controller.aadharStatus =='') CasinoButton(
                                   radius: 30,

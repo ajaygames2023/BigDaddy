@@ -1,3 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:camera_macos/camera_macos_controller.dart';
+import 'package:casino/global_widgets/camera_macos.dart';
+import 'package:casino/global_widgets/camera_windows.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,10 +19,10 @@ class VerificationController extends GetxController {
   bool isLoading = true;
   bool isNext = false;
   final ImagePicker picker = ImagePicker();
-  XFile? image;
-  XFile? panImage;
-  XFile? aadharFrontImage;
-  XFile? aadharBackImage;
+  File? image;
+  File? panImage;
+  File? aadharFrontImage;
+  File? aadharBackImage;
   bool isAadhar = true;
   String groupValue = 'Aadhar Card';
   Map<String, dynamic>? panVerified;
@@ -31,6 +37,9 @@ class VerificationController extends GetxController {
   TextEditingController aadharNo = TextEditingController();
   TextEditingController panNo = TextEditingController();
 
+   final GlobalKey cameraKey = GlobalKey(debugLabel: "cameraKey");
+  late CameraMacOSController macOSController;
+  String? deviceId;
 
   void loadingData(){
     isLoading = !isLoading;
@@ -46,36 +55,45 @@ class VerificationController extends GetxController {
     super.onInit();
   }
 
-  void pickImageFromCamera() async {
-    image = await picker.pickImage(source: ImageSource.camera);
-    update();
-  }
+  // void pickImageFromCamera() async {
+  //   image = await picker.pickImage(source: ImageSource.camera);
+  //   update();
+  // }
 
-    void pickImageFromGallery() async {
-    image = await picker.pickImage(source: ImageSource.gallery);
-    update();
-  }
+  //   void pickImageFromGallery() async {
+  //   image = await picker.pickImage(source: ImageSource.gallery);
+  //   update();
+  // }
 
-  void chooseWhichImage(String typeImage ) {
+  void chooseWhichImage(String typeImage,{File? image} ) {
     switch(typeImage) {
       case 'fontAadhar':
-        chooseWhereToPickImage(typeImage,aadharFrontImage);
+        chooseWhereToPickImage(typeImage,image);
         break;
       case 'backAadhar' :
-        chooseWhereToPickImage(typeImage,aadharBackImage);
+        chooseWhereToPickImage(typeImage,image);
         break;
       case 'pan':
-        chooseWhereToPickImage(typeImage,panImage);
+        chooseWhereToPickImage(typeImage,image);
         break;
       default:
-        chooseWhereToPickImage(typeImage,panImage);
+        chooseWhereToPickImage(typeImage,image);
         break;
     }
   }
 
+  void chooseImage(String imageType) {
+    Get.dialog(CameraWindows());
+    // Get.dialog( Camera(callBack: (image) async { 
+    // //   var a = await image;
+    // // print('aaa'+ await image.toString());
+    //   chooseWhichImage(imageType,image : image ?? File(''));},
+    //   ),);
+  }
+
     // image picker
-  void chooseWhereToPickImage(String imageType,XFile? image) async {
-     image = await pickImage('camera');
+  void chooseWhereToPickImage(String imageType,File? image) async {
+   //  image = await pickImage('camera');
       setImageToController(imageType,image);
       update();
     // Get.defaultDialog(
@@ -114,7 +132,8 @@ class VerificationController extends GetxController {
     // );
   }
 
-    void setImageToController(String imageType, XFile? image) {
+
+    void setImageToController(String imageType, File? image) {
       if(image!.path != '') {
          switch (imageType) {
       case 'pan':
@@ -132,25 +151,25 @@ class VerificationController extends GetxController {
    
   }
 
-   Future<XFile> pickImage(
-    String type,
-  ) async {
-    XFile? image;
-    switch (type) {
-      case 'camera':
-      const XTypeGroup typeGroup = XTypeGroup(
-        label: 'images',
-        extensions: <String>['jpg', 'png', 'pdf'],
-      );
-      image = await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
-      //  image = await picker.pickImage(source: ImageSource.camera,imageQuality: 5);
-        break;
-      case 'gallery':
-        image = await picker.pickImage(source: ImageSource.gallery,imageQuality: 5);
-        break;
-    }
-    return image ?? XFile('');
-  }
+  //  Future<XFile> pickImage(
+  //   String type,
+  // ) async {
+  //   XFile? image;
+  //   switch (type) {
+  //     case 'camera':
+  //     const XTypeGroup typeGroup = XTypeGroup(
+  //       label: 'images',
+  //       extensions: <String>['jpg', 'png', 'pdf'],
+  //     );
+  //     image = await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+  //     //  image = await picker.pickImage(source: ImageSource.camera,imageQuality: 5);
+  //       break;
+  //     case 'gallery':
+  //       image = await picker.pickImage(source: ImageSource.gallery,imageQuality: 5);
+  //       break;
+  //   }
+  //   return image ?? XFile('');
+  // }
 
   void getDocumentType(String value) {
     if(value == 'P') {
@@ -186,13 +205,13 @@ class VerificationController extends GetxController {
       var param = <String, dynamic>{
         'userId' : Helper.userId,
         'token': Helper.token,
-        'name': 'abc',
-        'panNumber': panNo.text, 
+        'name': Helper.customerName,
+        'panNumber': '12345678', 
         'state': 'Select State',
         'dob': '3-8-1997',
       };
-      if (panNo.text != '') {
-        panVerified = await ApiCallRepo.instance.panVerify(param, panImage ?? XFile(''));
+      if (panImage != null) {
+        panVerified = await ApiCallRepo.instance.panVerify(param, panImage ?? File(''));
         if (panVerified?["respCode"] == 100 ||
             panVerified?["respCode"] == 101) {
               getAllData();
@@ -220,14 +239,13 @@ class VerificationController extends GetxController {
       var param = <String, dynamic>{
         'userId': Helper.userId,
         'token': Helper.token,
-        'name': 'abc',
-        'aadharNumber': aadharNo.text,
+        'name': Helper.customerName,
+        'aadharNumber': '1234567890000',
         'state': 'Select State',
         'dob': '3-8-1997',
       };
-      if (aadharNo.text != '') {
-        aadharVerified = await ApiCallRepo.instance
-            .aadharVerify(param, aadharFrontImage ?? XFile(''), aadharBackImage?? XFile(''));
+      if (aadharFrontImage != null) {
+        aadharVerified = await ApiCallRepo.instance.aadharVerify(param, aadharFrontImage ?? File(''), aadharBackImage?? File(''));
         if (aadharVerified?["respCode"] == 100) {
             getAllData();
             Helper.toast(aadharVerified?["message"],);

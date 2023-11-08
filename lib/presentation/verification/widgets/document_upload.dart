@@ -9,7 +9,7 @@ class DocumentUpload extends StatelessWidget {
     this.image,
     this.callBack,
     super.key, });
-  final XFile? image;
+  final File? image;
   final VoidCallback? callBack;
 
   @override
