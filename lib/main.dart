@@ -24,8 +24,6 @@ class Casino extends StatefulWidget {
 
 class _CasinoState extends State<Casino> {
   @override
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: GetMaterialApp(
@@ -38,7 +36,7 @@ class _CasinoState extends State<Casino> {
         translations: CasinoTranslations(),
         locale: const Locale('en', 'EN'),
         getPages: AppPages.pages,
-        initialRoute: Routes.items,
+        initialRoute: Routes.splash,
       ),
     );
   }

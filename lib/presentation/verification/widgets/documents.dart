@@ -4,8 +4,6 @@ import 'package:casino/global_widgets/text.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:image_picker/image_picker.dart';
-
 import 'document_upload.dart';
 
 class Documents extends StatelessWidget {

@@ -20,7 +20,7 @@ class Splash extends GetView<SplashController> {
                   decoration: const BoxDecoration(
                     color: Colors.black,
                     image: DecorationImage(
-                      image: AssetImage("assets/images/mg_splash.jpg"),
+                      image: AssetImage("assets/images/mg_splash.png"),
                       fit: BoxFit.contain,
                     ),
                   ),

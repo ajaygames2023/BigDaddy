@@ -1,12 +1,19 @@
+import 'dart:typed_data';
+
+import 'package:casino/global_widgets/buttons.dart';
+import 'package:casino/presentation/verification/controller.dart';
 import 'package:casino/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:signature/signature.dart';
 
 import '../../domain/models/kycdata_status/index.dart';
 import '../../domain/models/messages.dart';
 import '../../domain/models/profile.dart';
 import '../../domain/models/user.dart';
 import '../../domain/repositories/api_calls.dart';
+import '../../global_widgets/dialog.dart';
 import '../../global_widgets/text.dart';
 import '../../utils/helper/helper.dart';
 import '../home/controller.dart';
@@ -31,6 +38,7 @@ class ChipController extends GetxController {
   String userKycStatus = '';
   String userId = '';
   bool isOTPField = false;
+  bool isVerificationDisabled = true;
   bool isNameField = false;
   Message? sendOtp; 
   Map<String, dynamic>? verifyOtp;
@@ -44,11 +52,26 @@ class ChipController extends GetxController {
   List<String> discountListType = ['Dealer','Management','Employment'];
   String discountType = 'Dealer';
   String discountGroupValue = 'Percentage';
+  Uint8List? signatureImg;
 
   String lessDiscount = '0';
 
+  String digitalKycGroupValue = 'No';
+  String digitalKycModeGroupValue = 'Pan';
+  String isVerified = 'No';
+  VerificationController? verificationController;
+  String groupValue = 'Aadhar Card';
+  XFile? image;
+  XFile? panImage;
+  XFile? aadharFrontImage;
+  XFile? aadharBackImage;
+  final ImagePicker picker = ImagePicker();
+  Map<String, dynamic>? panVerified;
+  Map<String, dynamic>? aadharVerified;
+
     @override
   void onInit() async {
+    verificationController = Get.put(VerificationController());
     super.onInit();
   }
 
@@ -171,10 +194,12 @@ class ChipController extends GetxController {
       if (verifyOtp?['respCode'] == 100) {
       userDetails = UserDetails.fromJson(verifyOtp?['respData']!);
         Helper.token = userDetails?.token ?? '';
-        isNameField = true;
-        btnTitle = 'Submit';
-        isResendOTP = false;
-        otpStatus = 'Verified';
+         isNameField = true;
+         isDisableUserBtn = true;
+         isVerificationDisabled = false;
+        // btnTitle = 'Submit';
+        // isResendOTP = false;
+        // otpStatus = 'Verified';
         update();
       } else {
         Helper.toast(verifyOtp?['message']);
@@ -244,7 +269,10 @@ String getGST(String amount) {
 }
 
 String getDiscount(String amount) {
-  return (num.parse(amount) * 0.21875).toStringAsFixed(2);
+  if(amount.trim() != ''){
+    return (num.parse(amount) * 0.21875).toStringAsFixed(2);
+  }
+  return '0';
 }
 
 String getDiscount1(String amount,{required String discountValue, required String discountType,required bool isDiscount}) {
@@ -335,6 +363,21 @@ Widget getRowWidget({required String title,required String amount}) {
    controller.openPaymentMode(name: 'abc',userId: '1',isKyc: true,amount: valueAmount.toString(),discount: getDiscount(valueAmount),amountAfterDiscount: valueAmount.toString());
   }
 
+  selectKycTypeMode(String val){
+    digitalKycGroupValue = val;
+    update();
+  }
+  selectKycMode(String val){
+    digitalKycModeGroupValue = val;
+    update();
+  }
+
+  selectIsVerified(String val){
+    isOTPField = false;
+    isVerified = val;
+    update();
+  }
+
   void clearData() {
     totalAmount = '0';
     valueAmount = '0';
@@ -360,6 +403,155 @@ Widget getRowWidget({required String title,required String amount}) {
     myProfile = null;
     update();
   }
+
+  void signature() {
+    Get.dialog(DialogBox(
+      title: 'Digital Signature',
+      child: SizedBox(
+        height: 400,
+        width: 400,
+        child: Column(
+          children: [
+            Signature(
+              height: 350,
+              controller: signatureController,
+              backgroundColor: CasinoColors.white,
+            ),
+            const SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CasinoButton(title: 'Clear',width: 100,onTap: (){signatureController.clear();},),
+                CasinoButton(title: 'Ok',width: 100,onTap: () async {
+                  Get.back();
+                  signatureImg = await signatureController.toPngBytes();
+                 // signatureController.toPngBytes();
+                 update();
+                },),
+              ],
+            )
+          ],
+        ),
+      ),
+    ));
+  }
+
+  final SignatureController signatureController = SignatureController(
+    penStrokeWidth: 5,
+    penColor: CasinoColors.secondary,
+    exportBackgroundColor: CasinoColors.white,
+);
+
+    void chooseWhichImage(String typeImage,{XFile? image} ) {
+    switch(typeImage) {
+      case 'fontAadhar':
+        chooseWhereToPickImage(typeImage,image);
+        break;
+      case 'backAadhar' :
+        chooseWhereToPickImage(typeImage,image);
+        break;
+      case 'pan':
+        chooseWhereToPickImage(typeImage,image);
+        break;
+      default:
+        chooseWhereToPickImage(typeImage,image);
+        break;
+    }
+  }
+
+    // image picker
+  void chooseWhereToPickImage(String imageType,XFile? image) async {
+    image = await picker.pickImage(source: ImageSource.camera);
+      setImageToController(imageType,image);
+      update();
+  }
+
+  void setImageToController(String imageType, XFile? image) {
+      if(image!.path != '') {
+         switch (imageType) {
+      case 'pan':
+        panImage = image;
+        break;
+      case 'fontAadhar':
+        aadharFrontImage = image;
+        break;
+      case 'backAadhar':
+        aadharBackImage = image;
+        break;
+      }
+     update();
+    }
+   
+  }
+
+      // pan verification
+  void panVerify() async {
+    try {
+      var param = <String, dynamic>{
+        'userId' : Helper.userId,
+        'token': Helper.token,
+        'name': Helper.customerName,
+        'panNumber': '12345678', 
+        'state': 'Select State',
+        'dob': '3-8-1997',
+      };
+      if (panImage != null) {
+        panVerified = await ApiCallRepo.instance.panVerify(param, panImage ?? XFile(''));
+        if (panVerified?["respCode"] == 100 ||
+            panVerified?["respCode"] == 101) {
+              Helper.toast('Pan Card Upload Successfully', );
+              update();
+        } else {
+          Helper.toast(panVerified?["message"], );
+        }
+      } else {
+        
+        Helper.toast('Please upload pan', );
+      }
+      
+    } catch (e) {
+      rethrow;
+    } finally {
+    }
+  }
+
+    // aadhar verification
+  void aadharVerify() async {
+    try {
+      var param = <String, dynamic>{
+        'userId': Helper.userId,
+        'token': Helper.token,
+        'name': Helper.customerName,
+        'aadharNumber': '1234567890000',
+        'state': 'Select State',
+        'dob': '3-8-1997',
+      };
+      if (aadharFrontImage != null) {
+        aadharVerified = await ApiCallRepo.instance.aadharVerify(param, aadharFrontImage ?? XFile(''), aadharBackImage?? XFile(''));
+        if (aadharVerified?["respCode"] == 100) {
+            Helper.toast(aadharVerified?["message"],);
+            update();
+        } else {
+          Helper.toast(aadharVerified?["message"],
+              );
+        }
+      } else {
+        Helper.toast('Please upload aadhar', );
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+    }
+  }
+
+  void onVerify() {
+    if(digitalKycModeGroupValue == 'Pan') {
+      panVerify();
+    } else {
+      aadharVerify();
+    }
+  }
+
 
   
 }

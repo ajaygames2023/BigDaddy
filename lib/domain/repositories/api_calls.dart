@@ -48,13 +48,13 @@ class ApiCallRepo {
 
     Future<Map<String, dynamic>> 
     panVerify(
-      Map<String, dynamic> params, File image) async {
+      Map<String, dynamic> params, XFile image) async {
     try {
       print(image.path);
       print(image.path.split('/').last);
       var formData = FormData.fromMap({
         ...params,
-        'panCardImage': await MultipartFile.fromFile(image.path, filename: image.path.split('/').last),
+        'panCardImage': await MultipartFile.fromFile(image.path, filename: image.name),
       });
       print(params);
       print(formData);
@@ -68,14 +68,14 @@ class ApiCallRepo {
 
    Future<Map<String, dynamic>> 
     aadharVerify(
-      Map<String, dynamic> params, File frontImage, File backImage) async {
+      Map<String, dynamic> params, XFile frontImage, XFile backImage) async {
     try {
       var formData = FormData.fromMap({
         ...params,
         'aadharCardFrontimage': await MultipartFile.fromFile(frontImage.path,
-            filename: frontImage.path.split('/').last),
+            filename: frontImage.name),
         'aadharCardBackimage': await MultipartFile.fromFile(backImage.path,
-            filename: backImage.path.split('/').last),
+            filename: backImage.name),
       });
       print(params);
       final apiRes =

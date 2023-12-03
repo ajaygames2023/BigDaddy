@@ -25,7 +25,7 @@ final VoidCallback onTap;
       child: GestureDetector(
         onTap: onTap,
         child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.of(context).size.height * 0.3,
           width: MediaQuery.of(context).size.width * 0.3,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -33,7 +33,7 @@ final VoidCallback onTap;
               child: Column(
                 children: [
                   // const SizedBox(height: 50,),
-                   CasinoText(text: title,fontWeight: FontWeight.bold,fontSize: 40,color: CasinoColors.white,),
+                   CasinoText(text: title,fontWeight: FontWeight.bold,fontSize: 30,color: CasinoColors.white,),
                   // const SizedBox(height: 50,),
                   Image.asset(image,color: CasinoColors.white,
                   height: MediaQuery.of(context).size.height * 0.3,

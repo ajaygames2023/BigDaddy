@@ -210,7 +210,7 @@ class VerificationController extends GetxController {
         'dob': '3-8-1997',
       };
       if (panImage != null) {
-        panVerified = await ApiCallRepo.instance.panVerify(param, panImage ?? File(''));
+    //    panVerified = await ApiCallRepo.instance.panVerify(param, panImage ?? File(''));
         if (panVerified?["respCode"] == 100 ||
             panVerified?["respCode"] == 101) {
               getAllData();
@@ -244,7 +244,7 @@ class VerificationController extends GetxController {
         'dob': '3-8-1997',
       };
       if (aadharFrontImage != null) {
-        aadharVerified = await ApiCallRepo.instance.aadharVerify(param, aadharFrontImage ?? File(''), aadharBackImage?? File(''));
+     //   aadharVerified = await ApiCallRepo.instance.aadharVerify(param, aadharFrontImage ?? File(''), aadharBackImage?? File(''));
         if (aadharVerified?["respCode"] == 100) {
             getAllData();
             Helper.toast(aadharVerified?["message"],);

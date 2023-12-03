@@ -6,7 +6,7 @@ class SplashController extends GetxController {
     @override
   void onInit() async {
     Future.delayed(const Duration(seconds: 1), () {
-      navigateToLogin();
+     // navigateToLogin();
      });
     super.onInit();
   }

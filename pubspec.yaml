@@ -62,6 +62,8 @@ dependencies:
   camera_macos: ^0.0.7+2
   camera_windows: ^0.2.1+8
   camera_platform_interface: ^2.6.0
+  responsive_builder: ^0.7.0
+  signature: ^5.4.0
 
 dev_dependencies:
   flutter_test:
